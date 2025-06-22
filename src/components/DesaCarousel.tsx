@@ -35,26 +35,26 @@ interface DesaCarouselProps {
 
 const AnggotaCard: React.FC<{ anggota: AnggotaDesa }> = ({ anggota }) => (
   <div className="flex-shrink-0 w-[250px] h-[350px] mx-2">
-    <div className="relative w-full h-full rounded-xl overflow-hidden shadow-[0px_4px_15px_rgba(59,130,246,0.25)] border border-blue-100 group">
+    <div className="relative w-full h-full rounded-xl overflow-hidden shadow-[0px_4px_15px_rgba(59,130,246,0.25)] border border-blue-100 group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-[0px_8px_30px_rgba(59,130,246,0.4)] hover:-translate-y-2">
       
       {/* Background Image */}
       <Image
         src={anggota.foto}
         alt={anggota.nama}
         fill
-        className="object-cover"
+        className="object-cover transition-transform duration-500 group-hover:scale-110"
       />
       
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-all duration-300 group-hover:from-black/90 group-hover:via-black/30"></div>
       
       {/* Content Overlay */}
       <div className="absolute inset-0 flex flex-col justify-end p-4 text-white">
         
         {/* Jabatan Badge - positioned at top */}
         <div className="absolute top-4 left-4 right-4">
-          <span className="inline-flex items-center px-3 py-1 bg-blue-500/90 backdrop-blur-sm rounded-full text-xs font-semibold text-white shadow-sm">
-            <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <span className="inline-flex items-center px-3 py-1 bg-blue-500/90 backdrop-blur-sm rounded-full text-xs font-semibold text-white shadow-sm transition-all duration-300 group-hover:bg-blue-600/95 group-hover:scale-105">
+            <svg className="w-3 h-3 mr-1 transition-transform duration-300 group-hover:rotate-12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z" />
               <path d="M19 20v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2" />
             </svg>
@@ -63,25 +63,36 @@ const AnggotaCard: React.FC<{ anggota: AnggotaDesa }> = ({ anggota }) => (
         </div>
 
         {/* Main Content - positioned at bottom */}
-        <div className="space-y-2">
-          <h4 className="text-lg font-bold text-white leading-tight line-clamp-2 drop-shadow-lg">
+        <div className="space-y-2 transform transition-all duration-300 group-hover:translate-y-[-8px]">
+          <h4 className="text-lg font-bold text-white leading-tight line-clamp-2 drop-shadow-lg transition-all duration-300 group-hover:text-xl group-hover:drop-shadow-2xl">
             {anggota.nama}
           </h4>
 
-          <p className="text-sm text-white/90 font-medium line-clamp-2 drop-shadow-md">
+          <p className="text-sm text-white/90 font-medium line-clamp-2 drop-shadow-md transition-all duration-300 group-hover:text-white group-hover:text-base">
             {anggota.prodi}
           </p>
 
           {anggota.nim && (
-            <p className="text-xs text-white/80 font-medium drop-shadow-md">
+            <p className="text-xs text-white/80 font-medium drop-shadow-md transition-all duration-300 group-hover:text-white/95 group-hover:text-sm">
               NIM: {anggota.nim}
             </p>
           )}
+          
+          {/* Additional Info on Hover */}
+          <div className="opacity-0 transform translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+          </div>
         </div>
       </div>
 
-      {/* Hover Effect */}
-      <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      {/* Animated Border Effect */}
+      <div className="absolute inset-0 rounded-xl border-2 border-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100 -z-10"></div>
+      <div className="absolute inset-[2px] rounded-xl bg-black opacity-0 transition-opacity duration-300 group-hover:opacity-100 -z-10"></div>
+
+      {/* Hover Overlay Effect */}
+      <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 via-transparent to-purple-600/20 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+      
+      {/* Shine Effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full transition-transform duration-700 group-hover:translate-x-full"></div>
     </div>
   </div>
 );
