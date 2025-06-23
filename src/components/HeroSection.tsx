@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const HeroSection: React.FC = () => {
   return (
-    <section className="relative w-full h-screen overflow-hidden">
+    <section className="pt-16 sm:pt-20 lg:pt-24 relative w-full h-screen overflow-hidden">
       {/* Menggunakan background global, tanpa background image */}
       
       {/* Decorative Element */}

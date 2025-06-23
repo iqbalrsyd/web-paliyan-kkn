@@ -2,7 +2,6 @@ import React from 'react';
 import DesaCarousel from './DesaCarousel';
 
 const DesaSection = () => {
-    // Data 3 desa dengan koordinator, foto bersama, dan anggota
     const desaData = [
         {
             id: 1,
@@ -15,7 +14,12 @@ const DesaSection = () => {
                 prodi: 'Teknik Elektro',
                 nim: '20/123456/TK/78901'
             },
-            fotoBersama: '/images/foto-bersama/karangduwet.jpg',
+            fotoBersama: [
+                '/images/foto-bersama/karangduwet-1.jpg',
+                '/images/foto-bersama/karangduwet-2.jpg',
+                '/images/foto-bersama/karangduwet-3.jpg',
+                '/images/foto-bersama/karangduwet-4.jpg'
+            ],
             anggota: [
                 {
                     id: 1,
@@ -62,7 +66,11 @@ const DesaSection = () => {
                 prodi: 'Ilmu Pemerintahan',
                 nim: '20/234567/SO/89012'
             },
-            fotoBersama: '/images/foto-bersama/grogol.jpg',
+            fotoBersama: [
+                '/images/foto-bersama/grogol-1.jpg',
+                '/images/foto-bersama/grogol-2.jpg',
+                '/images/foto-bersama/grogol-3.jpg'
+            ],
             anggota: [
                 {
                     id: 5,
@@ -101,7 +109,12 @@ const DesaSection = () => {
                 prodi: 'Kedokteran Hewan',
                 nim: '20/345678/KH/90123'
             },
-            fotoBersama: '/images/foto-bersama/pampang.jpg',
+            // Ubah dari string menjadi array
+            fotoBersama: [
+                '/images/foto-bersama/pampang-1.jpg',
+                '/images/foto-bersama/pampang-2.jpg',
+                '/images/foto-bersama/pampang-3.jpg'
+            ],
             anggota: [
                 {
                     id: 8,
@@ -148,12 +161,12 @@ const DesaSection = () => {
     ];
 
     return (
-        <section className="py-16 bg-blue-50">
-            <div className="container mx-auto px-4">
-                <h2 className="text-3xl font-bold text-center mb-4 text-blue-900">
+        <section id="profil" className="py-8 sm:py-12 lg:py-16 bg-blue-50 w-full">
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 className="text-2xl sm:text-3xl lg:text-3xl font-bold text-center mb-2 sm:mb-4 text-blue-900">
                     Tim KKN-PPM UGM Paliyan 2025
                 </h2>
-                <p className="text-center mb-12 text-blue-700 max-w-2xl mx-auto">
+                <p className="text-center mb-8 sm:mb-12 text-blue-700 max-w-2xl mx-auto text-sm sm:text-base">
                     Mahasiswa KKN-PPM UGM yang bertugas di 3 desa di Kecamatan Paliyan, 
                     Kabupaten Gunung Kidul untuk periode 2025.
                 </p>

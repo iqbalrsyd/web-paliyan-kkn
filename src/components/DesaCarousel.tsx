@@ -25,7 +25,7 @@ interface DesaData {
   namaDesa: string;
   deskripsi: string;
   koordinator: Koordinator;
-  fotoBersama: string;
+  fotoBersama: string[]; // Support both string and array
   anggota: AnggotaDesa[];
 }
 
@@ -97,6 +97,129 @@ const AnggotaCard: React.FC<{ anggota: AnggotaDesa }> = ({ anggota }) => (
   </div>
 );
 
+// Komponen FotoBersamaCarousel
+const FotoBersamaCarousel: React.FC<{ 
+  photos: string[], 
+  desaName: string 
+}> = ({ photos, desaName }) => {
+  const [currentPhotoIndex, setCurrentPhotoIndex] = React.useState(0);
+  const [isImageTransitioning, setIsImageTransitioning] = React.useState(false);
+
+  // Auto change photo setiap 3 detik
+  React.useEffect(() => {
+    if (photos.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setIsImageTransitioning(true);
+      
+      setTimeout(() => {
+        setCurrentPhotoIndex((prevIndex) => 
+          prevIndex === photos.length - 1 ? 0 : prevIndex + 1
+        );
+        setIsImageTransitioning(false);
+      }, 300);
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, [photos.length]);
+
+  const handlePhotoClick = (index: number) => {
+    if (isImageTransitioning || index === currentPhotoIndex) return;
+    
+    setIsImageTransitioning(true);
+    setTimeout(() => {
+      setCurrentPhotoIndex(index);
+      setIsImageTransitioning(false);
+    }, 300);
+  };
+
+  return (
+    <div className="relative h-32 lg:h-40 rounded-lg overflow-hidden border border-blue-200 group">
+      {/* Background Images */}
+      <div className="relative w-full h-full">
+        {photos.map((photo, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-all duration-500 ease-in-out ${
+              index === currentPhotoIndex 
+                ? 'opacity-100 scale-100' 
+                : 'opacity-0 scale-105'
+            } ${isImageTransitioning ? 'blur-sm' : 'blur-0'}`}
+          >
+            <Image
+              src={photo}
+              alt={`Foto bersama tim ${desaName} - ${index + 1}`}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent transition-all duration-300 group-hover:from-black/60"></div>
+      
+      {/* Content Overlay */}
+      <div className="absolute inset-0 flex flex-col justify-between p-3">
+        
+        {/* Photo Counter & Indicators */}
+        {photos.length > 1 && (
+          <div className="flex justify-between items-start">
+            {/* Photo Counter */}
+            <div className="bg-black/50 backdrop-blur-sm rounded-full px-2 py-1">
+              <span className="text-white text-xs font-medium">
+                {currentPhotoIndex + 1}/{photos.length}
+              </span>
+            </div>
+
+            {/* Auto Play Indicator */}
+            <div className="bg-blue-500/80 backdrop-blur-sm rounded-full p-1">
+              <svg className="w-3 h-3 text-white animate-pulse" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          </div>
+        )}
+
+        {/* Bottom Content */}
+        <div className="flex justify-between items-end">
+          <p className="text-white text-xs font-medium drop-shadow-lg">
+            Foto Bersama Tim {desaName}
+          </p>
+          
+          {/* Manual Navigation Dots */}
+          {photos.length > 1 && (
+            <div className="flex space-x-1">
+              {photos.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handlePhotoClick(index)}
+                  className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                    index === currentPhotoIndex 
+                      ? 'bg-white scale-125' 
+                      : 'bg-white/50 hover:bg-white/75'
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Hover Overlay */}
+      <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      
+      {/* Loading Effect */}
+      {isImageTransitioning && (
+        <div className="absolute inset-0 bg-blue-100/20 flex items-center justify-center">
+          <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Update DesaCarouselSection component
 const DesaCarouselSection: React.FC<{ desa: DesaData }> = ({ desa }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [isTransitioning, setIsTransitioning] = React.useState(false);
@@ -192,20 +315,11 @@ const DesaCarouselSection: React.FC<{ desa: DesaData }> = ({ desa }) => {
           </div>
         </div>
 
-        {/* Foto Bersama */}
-        <div className="relative h-32 lg:h-40 rounded-lg overflow-hidden border border-blue-200">
-          <Image
-            src={desa.fotoBersama}
-            alt={`Foto bersama tim ${desa.namaDesa}`}
-            fill
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end">
-            <p className="text-white text-xs font-medium p-3 drop-shadow">
-              Foto Bersama Tim {desa.namaDesa}
-            </p>
-          </div>
-        </div>
+        {/* Foto Bersama dengan Carousel */}
+        <FotoBersamaCarousel 
+          photos={desa.fotoBersama} 
+          desaName={desa.namaDesa}
+        />
       </div>
 
       {/* Carousel Anggota */}
