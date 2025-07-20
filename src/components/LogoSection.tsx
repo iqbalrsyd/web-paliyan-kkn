@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 
 const LogoSection = () => {
   const [scrollY, setScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [activeElement, setActiveElement] = useState<string | null>(null);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -63,58 +62,31 @@ const LogoSection = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Logo elements with interactive descriptions
-  const logoElements = [
-    {
-      id: 'langit',
-      title: 'Langit Biru',
-      shortDesc: 'Harapan & Optimisme',
-      fullDesc: 'Langit biru yang cerah melambangkan harapan dan optimisme untuk masa depan yang lebih baik bagi masyarakat Paliyan',
-      icon: '☀️',
-      color: 'blue',
-      position: { x: 20, y: 15 }
-    },
-    {
-      id: 'matahari',
-      title: 'Matahari',
-      shortDesc: 'Semangat & Energi',
-      fullDesc: 'Matahari yang bersinar melambangkan semangat dan energi positif tim KKN-PPM UGM dalam menjalankan program pemberdayaan',
-      icon: '🌅',
-      color: 'orange',
-      position: { x: 75, y: 20 }
-    },
-    {
-      id: 'pegunungan',
-      title: '3 Pegunungan',
-      shortDesc: 'Tiga Desa Sasaran',
-      fullDesc: 'Tiga pegunungan menggambarkan Karangduwet, Grogol, dan Pampang yang bersinergi dalam pembangunan berkelanjutan',
-      icon: '🏔️',
-      color: 'green',
-      position: { x: 50, y: 75 }
-    }
-  ];
-
-  // Gallery functions
-  const openGallery = (index: number = 0) => {
+  // Gallery functions - wrapped with useCallback to fix dependency issues
+  const openGallery = useCallback((index: number = 0) => {
     setGalleryIndex(index);
     setIsGalleryOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = 'hidden';
+    }
+  }, []);
 
-  const closeGallery = () => {
+  const closeGallery = useCallback(() => {
     setIsGalleryOpen(false);
-    document.body.style.overflow = 'unset';
-  };
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = 'unset';
+    }
+  }, []);
 
-  const nextGalleryImage = () => {
+  const nextGalleryImage = useCallback(() => {
     setGalleryIndex((prev) => (prev + 1) % galleryImages.length);
-  };
+  }, [galleryImages.length]);
 
-  const prevGalleryImage = () => {
+  const prevGalleryImage = useCallback(() => {
     setGalleryIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length);
-  };
+  }, [galleryImages.length]);
 
-  // Keyboard navigation
+  // Keyboard navigation - FIXED dependencies
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (!isGalleryOpen) return;
@@ -123,9 +95,11 @@ const LogoSection = () => {
       if (e.key === 'Escape') closeGallery();
     };
 
-    document.addEventListener('keydown', handleKeyPress);
-    return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [isGalleryOpen]);
+    if (typeof document !== 'undefined') {
+      document.addEventListener('keydown', handleKeyPress);
+      return () => document.removeEventListener('keydown', handleKeyPress);
+    }
+  }, [isGalleryOpen, nextGalleryImage, prevGalleryImage, closeGallery]);
 
   return (
     <>
@@ -177,7 +151,7 @@ const LogoSection = () => {
             </svg>
           </div>
 
-          {/* Mobile Optimized Grid */}
+          {/* Mobile Optimized Grid - FIXED unused parameter */}
           <div className="absolute inset-0 opacity-5">
             <div 
               className="grid grid-cols-6 sm:grid-cols-8 gap-2 h-full"
@@ -185,12 +159,12 @@ const LogoSection = () => {
                 transform: `translateY(${scrollY * 0.02}px) rotate(0.5deg)`
               }}
             >
-              {Array.from({ length: 48 }).map((_, i) => (
+              {Array.from({ length: 48 }).map((_, gridIndex) => (
                 <div 
-                  key={i} 
+                  key={gridIndex} 
                   className="border border-gray-300 rounded animate-pulse"
                   style={{
-                    animationDelay: `${i * 0.1}s`,
+                    animationDelay: `${gridIndex * 0.1}s`,
                     animationDuration: '4s'
                   }}
                 ></div>
@@ -258,29 +232,6 @@ const LogoSection = () => {
                       <div className="absolute inset-0 bg-gradient-to-b from-blue-300 via-orange-300 to-green-700 rounded-full opacity-20"></div>
                     </div>
                     
-                    {/* Interactive Hotspots */}
-                    {logoElements.map((element) => (
-                      <button
-                        key={element.id}
-                        className={`absolute w-6 h-6 rounded-full border-2 border-white shadow-lg transition-all duration-300 transform hover:scale-150 active:scale-125 ${
-                          element.color === 'blue' ? 'bg-blue-500 hover:bg-blue-600' :
-                          element.color === 'orange' ? 'bg-orange-500 hover:bg-orange-600' :
-                          'bg-green-500 hover:bg-green-600'
-                        } ${activeElement === element.id ? 'scale-150 animate-ping' : 'animate-pulse'}`}
-                        style={{
-                          left: `${element.position.x}%`,
-                          top: `${element.position.y}%`,
-                          animationDelay: `${element.position.x * 0.01}s`
-                        }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setActiveElement(activeElement === element.id ? null : element.id);
-                        }}
-                      >
-                        <span className="sr-only">{element.title}</span>
-                      </button>
-                    ))}
-                    
                     {/* Click to View Gallery Indicator */}
                     <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-full flex items-center justify-center">
                       <div className="bg-white/90 rounded-full p-3 transform scale-0 group-hover:scale-100 transition-transform">
@@ -307,99 +258,32 @@ const LogoSection = () => {
               </button>
             </div>
 
-            {/* Active Element Description */}
-            {activeElement && (
-              <div className={`max-w-2xl mx-auto bg-white rounded-2xl p-6 sm:p-8 shadow-xl border animate-slide-up ${
-                logoElements.find(el => el.id === activeElement)?.color === 'blue' ? 'border-blue-200' :
-                logoElements.find(el => el.id === activeElement)?.color === 'orange' ? 'border-orange-200' :
-                'border-green-200'
-              }`}>
-                {(() => {
-                  const element = logoElements.find(el => el.id === activeElement);
-                  if (!element) return null;
-                  
-                  return (
-                    <>
-                      <div className="flex items-center mb-4">
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl mr-4 ${
-                          element.color === 'blue' ? 'bg-blue-100' :
-                          element.color === 'orange' ? 'bg-orange-100' :
-                          'bg-green-100'
-                        }`}>
-                          {element.icon}
-                        </div>
-                        <h3 className={`text-xl sm:text-2xl font-bold ${
-                          element.color === 'blue' ? 'text-blue-700' :
-                          element.color === 'orange' ? 'text-orange-700' :
-                          'text-green-700'
-                        }`}>
-                          {element.title}
-                        </h3>
-                        <button
-                          onClick={() => setActiveElement(null)}
-                          className="ml-auto p-2 rounded-full hover:bg-gray-100 transition-colors"
-                        >
-                          <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
-                      </div>
-                      <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
-                        {element.fullDesc}
-                      </p>
-                    </>
-                  );
-                })()}
-              </div>
-            )}
-          </div>
-
-          {/* Enhanced Philosophy Section */}
-          <div className="max-w-6xl mx-auto">
-            <div className={`bg-gradient-to-br from-teal-600 via-teal-700 to-blue-800 rounded-2xl sm:rounded-3xl p-8 sm:p-12 lg:p-16 text-white overflow-hidden shadow-2xl transition-all duration-1000 ${
-              isVisible ? 'animate-slide-up opacity-100' : 'opacity-0 translate-y-20'
-            }`} style={{ animationDelay: '0.8s' }}>
-              
-              {/* Background Pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <pattern id="philosophy-dots" width="40" height="40" patternUnits="userSpaceOnUse">
-                      <circle cx="20" cy="20" r="2" fill="currentColor" opacity="0.3"/>
-                    </pattern>
-                  </defs>
-                  <rect width="100%" height="100%" fill="url(#philosophy-dots)"/>
-                </svg>
-              </div>
-              
-              <div className="relative z-10">
-                <div className="text-center mb-8 sm:mb-12">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-2xl mb-6 backdrop-blur-sm">
-                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+            {/* Simple Logo Description */}
+            <div className="max-w-4xl mx-auto">
+              <div className={`bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 lg:p-16 shadow-xl border border-gray-100 transition-all duration-1000 ${
+                isVisible ? 'animate-slide-up opacity-100' : 'opacity-0 translate-y-20'
+              }`} style={{ animationDelay: '0.8s' }}>
+                
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-2xl mb-6">
+                    <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                     </svg>
                   </div>
                   
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 tracking-tight">
-                    Filosofi Logo Paliyan Menawan
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-6 tracking-tight">
+                    Logo Paliyan Menawan
                   </h3>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-                  {logoElements.map((element, index) => (
-                    <div 
-                      key={element.id}
-                      className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:scale-105"
-                    >
-                      <div className="text-center">
-                        <div className="text-4xl mb-4">{element.icon}</div>
-                        <h4 className="text-xl font-bold mb-2">{element.title}</h4>
-                        <p className="text-white/90 text-sm leading-relaxed">
-                          {element.fullDesc}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                  
+                  <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                    Logo "Paliyan Menawan" menggambarkan harmoni antara alam dan masyarakat lokal. 
+                    Desain ini memadukan elemen langit biru yang melambangkan harapan, matahari 
+                    yang merepresentasikan semangat dan energi positif, serta tiga pegunungan yang 
+                    menggambarkan tiga desa sasaran program KKN-PPM: Karangduwet, Grogol, dan Pampang. 
+                    Identitas visual ini mencerminkan komitmen kami dalam membangun pemberdayaan 
+                    masyarakat yang berkelanjutan dengan menghargai kearifan lokal dan keindahan 
+                    alam Gunung Kidul.
+                  </p>
                 </div>
               </div>
             </div>
@@ -466,12 +350,12 @@ const LogoSection = () => {
               
               {/* Gallery Thumbnails */}
               <div className="flex space-x-2 overflow-x-auto pb-2">
-                {galleryImages.map((image, index) => (
+                {galleryImages.map((image, thumbnailIndex) => (
                   <button
-                    key={index}
-                    onClick={() => setGalleryIndex(index)}
+                    key={thumbnailIndex}
+                    onClick={() => setGalleryIndex(thumbnailIndex)}
                     className={`relative flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                      index === galleryIndex 
+                      thumbnailIndex === galleryIndex 
                         ? 'border-white scale-110' 
                         : 'border-white/30 hover:border-white/60 hover:scale-105'
                     }`}

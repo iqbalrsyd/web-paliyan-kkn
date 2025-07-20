@@ -150,19 +150,19 @@ const HeroSection: React.FC = () => {
     }
   }, []);
 
-  const nextGalleryImage = () => {
+  const nextGalleryImage = useCallback(() => {
     setGalleryIndex((prev) => 
       prev === heroImages.length - 1 ? 0 : prev + 1
     );
-  };
+  }, [heroImages.length]);
 
-  const prevGalleryImage = () => {
+  const prevGalleryImage = useCallback(() => {
     setGalleryIndex((prev) => 
       prev === 0 ? heroImages.length - 1 : prev - 1
     );
-  };
+  }, [heroImages.length]);
 
-  // Keyboard navigation for gallery
+  // Keyboard navigation for gallery - FIXED dependencies
   useEffect(() => {
     if (!isMounted) return;
     
@@ -176,7 +176,7 @@ const HeroSection: React.FC = () => {
 
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [isGalleryOpen, closeGallery, isMounted]);
+  }, [isGalleryOpen, closeGallery, prevGalleryImage, nextGalleryImage, isMounted]);
 
   // Get grid columns count safely
   const getGridColumnsCount = () => {
@@ -222,12 +222,12 @@ const HeroSection: React.FC = () => {
                 transform: `translateY(${scrollY * 0.02}px)`
               }}
             >
-              {Array.from({ length: getGridColumnsCount() }).map((_, i) => (
+              {Array.from({ length: getGridColumnsCount() }).map((_, gridIndex) => (
                 <div 
-                  key={i} 
+                  key={gridIndex} 
                   className="border-r border-gray-400 animate-pulse"
                   style={{
-                    animationDelay: `${i * 0.2}s`,
+                    animationDelay: `${gridIndex * 0.2}s`,
                     animationDuration: '4s'
                   }}
                 ></div>
@@ -330,11 +330,11 @@ const HeroSection: React.FC = () => {
                 <div className="relative bg-white p-2 sm:p-3 rounded-2xl shadow-xl transform transition-transform duration-500 hover:scale-105">
                   <div className="relative overflow-hidden rounded-xl">
                     <div className="relative w-full h-48 sm:h-56">
-                      {heroImages.map((image, index) => (
+                      {heroImages.map((image, imgIndex) => (
                         <div
-                          key={index}
+                          key={imgIndex}
                           className={`absolute inset-0 transition-all duration-1000 ${
-                            index === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+                            imgIndex === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
                           }`}
                         >
                           <Image
@@ -342,7 +342,7 @@ const HeroSection: React.FC = () => {
                             alt={image.alt}
                             fill
                             className="object-cover rounded-xl cursor-pointer"
-                            onClick={() => openGallery(index)}
+                            onClick={() => openGallery(imgIndex)}
                             sizes="(max-width: 640px) 100vw, 50vw"
                           />
                         </div>
@@ -373,12 +373,12 @@ const HeroSection: React.FC = () => {
 
                   {/* Enhanced Mobile Indicators */}
                   <div className="flex justify-center mt-3 space-x-1.5">
-                    {heroImages.map((_, index) => (
+                    {heroImages.map((_, indicatorIndex) => (
                       <button
-                        key={index}
-                        onClick={() => setCurrentImageIndex(index)}
+                        key={indicatorIndex}
+                        onClick={() => setCurrentImageIndex(indicatorIndex)}
                         className={`h-1.5 rounded-full transition-all duration-300 touch-manipulation ${
-                          index === currentImageIndex 
+                          indicatorIndex === currentImageIndex 
                             ? 'bg-blue-600 w-6' 
                             : 'bg-gray-300 w-1.5 hover:bg-gray-400 active:bg-gray-500'
                         }`}
@@ -420,12 +420,12 @@ const HeroSection: React.FC = () => {
                       { pos: "top-4 right-4", corner: "tr" },
                       { pos: "bottom-4 left-4", corner: "bl" },
                       { pos: "bottom-4 right-4", corner: "br" }
-                    ].map((corner, i) => (
+                    ].map((corner, cornerIndex) => (
                       <div 
-                        key={i}
+                        key={cornerIndex}
                         className={`absolute ${corner.pos} w-8 h-8 border-4 border-white/50 rounded-${corner.corner}-lg transform transition-all duration-300 group-hover:border-white/80 group-hover:scale-110`}
                         style={{ 
-                          animationDelay: `${i * 0.1}s`,
+                          animationDelay: `${cornerIndex * 0.1}s`,
                           borderWidth: corner.corner === 'tl' ? '4px 0 0 4px' :
                                       corner.corner === 'tr' ? '4px 4px 0 0' :
                                       corner.corner === 'bl' ? '0 0 4px 4px' :
@@ -437,11 +437,11 @@ const HeroSection: React.FC = () => {
 
                   {/* Enhanced Changing Images */}
                   <div className="relative w-full h-80 overflow-hidden rounded-xl cursor-pointer" onClick={() => openGallery(currentImageIndex)}>
-                    {heroImages.map((image, index) => (
+                    {heroImages.map((image, desktopImgIndex) => (
                       <div
-                        key={index}
+                        key={desktopImgIndex}
                         className={`absolute inset-0 transition-all duration-1000 ${
-                          index === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-110'
+                          desktopImgIndex === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-110'
                         }`}
                       >
                         <Image
@@ -449,7 +449,7 @@ const HeroSection: React.FC = () => {
                           alt={image.alt}
                           fill
                           className="object-cover transition-transform duration-1000 group-hover:scale-105"
-                          priority={index === 0}
+                          priority={desktopImgIndex === 0}
                           sizes="50vw"
                         />
                       </div>
@@ -480,12 +480,12 @@ const HeroSection: React.FC = () => {
 
                 {/* Enhanced Image Indicators */}
                 <div className="flex justify-center mt-4 space-x-2">
-                  {heroImages.map((_, index) => (
+                  {heroImages.map((_, desktopIndicatorIndex) => (
                     <button
-                      key={index}
-                      onClick={() => setCurrentImageIndex(index)}
+                      key={desktopIndicatorIndex}
+                      onClick={() => setCurrentImageIndex(desktopIndicatorIndex)}
                       className={`h-2 rounded-full transition-all duration-300 hover:scale-110 ${
-                        index === currentImageIndex 
+                        desktopIndicatorIndex === currentImageIndex 
                           ? 'bg-blue-600 w-8 shadow-lg' 
                           : 'bg-gray-300 w-2 hover:bg-gray-400'
                       }`}
@@ -588,12 +588,12 @@ const HeroSection: React.FC = () => {
               
               {/* Gallery Thumbnails */}
               <div className="flex space-x-2 overflow-x-auto pb-2">
-                {heroImages.map((image, index) => (
+                {heroImages.map((image, thumbIndex) => (
                   <button
-                    key={index}
-                    onClick={() => setGalleryIndex(index)}
+                    key={thumbIndex}
+                    onClick={() => setGalleryIndex(thumbIndex)}
                     className={`relative flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                      index === galleryIndex 
+                      thumbIndex === galleryIndex 
                         ? 'border-white scale-110' 
                         : 'border-white/30 hover:border-white/60 hover:scale-105'
                     }`}
