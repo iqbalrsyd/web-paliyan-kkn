@@ -44,9 +44,15 @@ const HeroSection: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number>(0);
   const touchStartY = useRef<number>(0);
+
+  // Check if component is mounted to avoid SSR issues
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Auto change image every 4 seconds
   useEffect(() => {
@@ -61,13 +67,17 @@ const HeroSection: React.FC = () => {
 
   // Scroll effect for parallax
   useEffect(() => {
+    if (!isMounted) return;
+    
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isMounted]);
 
   // Mouse move effect for desktop
   useEffect(() => {
+    if (!isMounted) return;
+    
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({
         x: (e.clientX - window.innerWidth / 2) * 0.01,
@@ -77,10 +87,12 @@ const HeroSection: React.FC = () => {
     
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [isMounted]);
 
   // Intersection Observer for entrance animation
   useEffect(() => {
+    if (!isMounted) return;
+    
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
@@ -93,7 +105,7 @@ const HeroSection: React.FC = () => {
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [isMounted]);
 
   // Touch handlers for mobile swipe
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -126,12 +138,16 @@ const HeroSection: React.FC = () => {
   const openGallery = useCallback((index: number = 0) => {
     setGalleryIndex(index);
     setIsGalleryOpen(true);
-    document.body.style.overflow = 'hidden';
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = 'hidden';
+    }
   }, []);
 
   const closeGallery = useCallback(() => {
     setIsGalleryOpen(false);
-    document.body.style.overflow = 'unset';
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = 'unset';
+    }
   }, []);
 
   const nextGalleryImage = () => {
@@ -148,6 +164,8 @@ const HeroSection: React.FC = () => {
 
   // Keyboard navigation for gallery
   useEffect(() => {
+    if (!isMounted) return;
+    
     const handleKeyPress = (e: KeyboardEvent) => {
       if (!isGalleryOpen) return;
       
@@ -158,7 +176,13 @@ const HeroSection: React.FC = () => {
 
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [isGalleryOpen, closeGallery]);
+  }, [isGalleryOpen, closeGallery, isMounted]);
+
+  // Get grid columns count safely
+  const getGridColumnsCount = () => {
+    if (!isMounted || typeof window === 'undefined') return 8; // Default for SSR
+    return window.innerWidth > 640 ? 12 : 8;
+  };
 
   return (
     <>
@@ -198,7 +222,7 @@ const HeroSection: React.FC = () => {
                 transform: `translateY(${scrollY * 0.02}px)`
               }}
             >
-              {Array.from({ length: window.innerWidth > 640 ? 12 : 8 }).map((_, i) => (
+              {Array.from({ length: getGridColumnsCount() }).map((_, i) => (
                 <div 
                   key={i} 
                   className="border-r border-gray-400 animate-pulse"
@@ -278,8 +302,11 @@ const HeroSection: React.FC = () => {
               isVisible ? 'animate-slide-up opacity-100' : 'opacity-0 translate-y-10'
             }`} style={{ animationDelay: '1s' }}>
               <button 
-                onClick={() => document.getElementById('profil')?.scrollIntoView({ behavior: 'smooth' })}
-                className="group bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg active:scale-95 flex items-center justify-center"
+                onClick={() => {
+                  const element = document.getElementById('profil');
+                  element?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="group bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg active:scale-95 flex items-center justify-center touch-manipulation"
               >
                 <span>Pelajari Program Kami</span>
                 <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -288,7 +315,7 @@ const HeroSection: React.FC = () => {
               </button>
               <button 
                 onClick={() => openGallery(0)}
-                className="group border-2 border-gray-300 hover:border-blue-600 hover:bg-blue-50 text-gray-700 hover:text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 active:scale-95 flex items-center justify-center"
+                className="group border-2 border-gray-300 hover:border-blue-600 hover:bg-blue-50 text-gray-700 hover:text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 active:scale-95 flex items-center justify-center touch-manipulation"
               >
                 <svg className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />

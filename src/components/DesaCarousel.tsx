@@ -258,7 +258,7 @@ const DesaCarouselSection: React.FC<{ desa: DesaData }> = ({ desa }) => {
               transform: `translateX(-${currentIndex * (240 + 24)}px)` // card width + margin
             }}
           >
-            {desa.anggota.map((anggota, index) => (
+            {desa.anggota.map((anggota) => (
               <AnggotaCard 
                 key={anggota.id} 
                 anggota={anggota} 
@@ -296,12 +296,12 @@ const DesaCarouselSection: React.FC<{ desa: DesaData }> = ({ desa }) => {
         {desa.anggota.length > itemsPerPage && (
           <div className="flex justify-center mt-8">
             <div className="flex space-x-2">
-              {Array.from({ length: maxIndex + 1 }).map((_, index) => (
+              {Array.from({ length: maxIndex + 1 }).map((_, indicatorIndex) => (
                 <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
+                  key={indicatorIndex}
+                  onClick={() => setCurrentIndex(indicatorIndex)}
                   className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                    index === currentIndex 
+                    indicatorIndex === currentIndex 
                       ? 'bg-blue-500 w-6' 
                       : 'bg-gray-300 hover:bg-gray-400'
                   }`}
