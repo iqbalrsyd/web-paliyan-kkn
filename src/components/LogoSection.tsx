@@ -276,7 +276,7 @@ const LogoSection = () => {
                   </h3>
                   
                   <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
-                    Logo "Paliyan Menawan" menggambarkan harmoni antara alam dan masyarakat lokal. 
+                    Logo &ldquo;Paliyan Menawan&rdquo; menggambarkan harmoni antara alam dan masyarakat lokal. 
                     Desain ini memadukan elemen langit biru yang melambangkan harapan, matahari 
                     yang merepresentasikan semangat dan energi positif, serta tiga pegunungan yang 
                     menggambarkan tiga desa sasaran program KKN-PPM: Karangduwet, Grogol, dan Pampang. 
