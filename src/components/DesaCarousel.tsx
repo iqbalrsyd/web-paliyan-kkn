@@ -25,7 +25,7 @@ interface DesaData {
   namaDesa: string;
   deskripsi: string;
   koordinator: Koordinator;
-  fotoBersama: string[]; // Support both string and array
+  fotoBersama: string[];
   anggota: AnggotaDesa[];
 }
 
@@ -33,331 +33,258 @@ interface DesaCarouselProps {
   desaList: DesaData[];
 }
 
+// Minimalist Anggota Card
 const AnggotaCard: React.FC<{ anggota: AnggotaDesa }> = ({ anggota }) => (
-  <div className="flex-shrink-0 w-[250px] h-[350px] mx-2">
-    <div className="relative w-full h-full rounded-xl overflow-hidden shadow-[0px_4px_15px_rgba(59,130,246,0.25)] border border-blue-100 group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-[0px_8px_30px_rgba(59,130,246,0.4)] hover:-translate-y-2">
+  <div className="flex-shrink-0 w-[240px] h-[300px] mx-3">
+    <div className="relative w-full h-full group cursor-pointer">
       
-      {/* Background Image */}
-      <Image
-        src={anggota.foto}
-        alt={anggota.nama}
-        fill
-        className="object-cover transition-transform duration-500 group-hover:scale-110"
-      />
-      
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-all duration-300 group-hover:from-black/90 group-hover:via-black/30"></div>
-      
-      {/* Content Overlay */}
-      <div className="absolute inset-0 flex flex-col justify-end p-4 text-white">
+      {/* Main Card */}
+      <div className="relative w-full h-full rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:border-gray-200 group-hover:-translate-y-1">
         
-        {/* Jabatan Badge - positioned at top */}
-        <div className="absolute top-4 left-4 right-4">
-          <span className="inline-flex items-center px-3 py-1 bg-blue-500/90 backdrop-blur-sm rounded-full text-xs font-semibold text-white shadow-sm transition-all duration-300 group-hover:bg-blue-600/95 group-hover:scale-105">
-            <svg className="w-3 h-3 mr-1 transition-transform duration-300 group-hover:rotate-12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z" />
-              <path d="M19 20v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2" />
-            </svg>
-            {anggota.jabatan}
-          </span>
+        {/* Image */}
+        <div className="relative w-full h-[200px] overflow-hidden">
+          <Image
+            src={anggota.foto}
+            alt={anggota.nama}
+            fill
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+          {/* Subtle overlay */}
+          <div className="absolute inset-0 bg-black/5 transition-opacity duration-300 group-hover:bg-black/0"></div>
         </div>
-
-        {/* Main Content - positioned at bottom */}
-        <div className="space-y-2 transform transition-all duration-300 group-hover:translate-y-[-8px]">
-          <h4 className="text-lg font-bold text-white leading-tight line-clamp-2 drop-shadow-lg transition-all duration-300 group-hover:text-xl group-hover:drop-shadow-2xl">
+        
+        {/* Content */}
+        <div className="p-4 space-y-1">
+          <h4 className="font-semibold text-gray-900 text-sm leading-tight">
             {anggota.nama}
           </h4>
-
-          <p className="text-sm text-white/90 font-medium line-clamp-2 drop-shadow-md transition-all duration-300 group-hover:text-white group-hover:text-base">
+          <p className="text-xs text-blue-600 font-medium">
+            {anggota.jabatan}
+          </p>
+          <p className="text-xs text-gray-500">
             {anggota.prodi}
           </p>
-
           {anggota.nim && (
-            <p className="text-xs text-white/80 font-medium drop-shadow-md transition-all duration-300 group-hover:text-white/95 group-hover:text-sm">
-              NIM: {anggota.nim}
+            <p className="text-xs text-gray-400 pt-1">
+              {anggota.nim}
             </p>
           )}
-          
-          {/* Additional Info on Hover */}
-          <div className="opacity-0 transform translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-          </div>
         </div>
+
+        {/* Subtle hover accent */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-600 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100 origin-left"></div>
       </div>
-
-      {/* Animated Border Effect */}
-      <div className="absolute inset-0 rounded-xl border-2 border-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100 -z-10"></div>
-      <div className="absolute inset-[2px] rounded-xl bg-black opacity-0 transition-opacity duration-300 group-hover:opacity-100 -z-10"></div>
-
-      {/* Hover Overlay Effect */}
-      <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 via-transparent to-purple-600/20 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-      
-      {/* Shine Effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full transition-transform duration-700 group-hover:translate-x-full"></div>
     </div>
   </div>
 );
 
-// Komponen FotoBersamaCarousel
+// Minimalist Photo Carousel
 const FotoBersamaCarousel: React.FC<{ 
   photos: string[], 
   desaName: string 
 }> = ({ photos, desaName }) => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = React.useState(0);
-  const [isImageTransitioning, setIsImageTransitioning] = React.useState(false);
 
-  // Auto change photo setiap 3 detik
   React.useEffect(() => {
     if (photos.length <= 1) return;
 
     const timer = setInterval(() => {
-      setIsImageTransitioning(true);
-      
-      setTimeout(() => {
-        setCurrentPhotoIndex((prevIndex) => 
-          prevIndex === photos.length - 1 ? 0 : prevIndex + 1
-        );
-        setIsImageTransitioning(false);
-      }, 300);
-    }, 3000);
+      setCurrentPhotoIndex((prevIndex) => 
+        prevIndex === photos.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 4000);
 
     return () => clearInterval(timer);
   }, [photos.length]);
 
   const handlePhotoClick = (index: number) => {
-    if (isImageTransitioning || index === currentPhotoIndex) return;
-    
-    setIsImageTransitioning(true);
-    setTimeout(() => {
-      setCurrentPhotoIndex(index);
-      setIsImageTransitioning(false);
-    }, 300);
+    setCurrentPhotoIndex(index);
   };
 
   return (
-    <div className="relative h-32 lg:h-40 rounded-lg overflow-hidden border border-blue-200 group">
-      {/* Background Images */}
+    <div className="relative h-[140px] rounded-xl overflow-hidden bg-gray-50 group">
+      {/* Images */}
       <div className="relative w-full h-full">
         {photos.map((photo, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-all duration-500 ease-in-out ${
-              index === currentPhotoIndex 
-                ? 'opacity-100 scale-100' 
-                : 'opacity-0 scale-105'
-            } ${isImageTransitioning ? 'blur-sm' : 'blur-0'}`}
+            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+              index === currentPhotoIndex ? 'opacity-100' : 'opacity-0'
+            }`}
           >
             <Image
               src={photo}
-              alt={`Foto bersama tim ${desaName} - ${index + 1}`}
+              alt={`Tim ${desaName} - ${index + 1}`}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
+              className="object-cover transition-transform duration-1000 group-hover:scale-102"
             />
           </div>
         ))}
       </div>
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent transition-all duration-300 group-hover:from-black/60"></div>
+      {/* Simple overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
       
-      {/* Content Overlay */}
-      <div className="absolute inset-0 flex flex-col justify-between p-3">
-        
-        {/* Photo Counter & Indicators */}
-        {photos.length > 1 && (
-          <div className="flex justify-between items-start">
-            {/* Photo Counter */}
-            <div className="bg-black/50 backdrop-blur-sm rounded-full px-2 py-1">
-              <span className="text-white text-xs font-medium">
-                {currentPhotoIndex + 1}/{photos.length}
-              </span>
-            </div>
-
-            {/* Auto Play Indicator */}
-            <div className="bg-blue-500/80 backdrop-blur-sm rounded-full p-1">
-              <svg className="w-3 h-3 text-white animate-pulse" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </div>
-          </div>
-        )}
-
-        {/* Bottom Content */}
-        <div className="flex justify-between items-end">
-          <p className="text-white text-xs font-medium drop-shadow-lg">
-            Foto Bersama Tim {desaName}
-          </p>
-          
-          {/* Manual Navigation Dots */}
-          {photos.length > 1 && (
-            <div className="flex space-x-1">
-              {photos.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handlePhotoClick(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                    index === currentPhotoIndex 
-                      ? 'bg-white scale-125' 
-                      : 'bg-white/50 hover:bg-white/75'
-                  }`}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Hover Overlay */}
-      <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      
-      {/* Loading Effect */}
-      {isImageTransitioning && (
-        <div className="absolute inset-0 bg-blue-100/20 flex items-center justify-center">
-          <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      {/* Minimal indicators */}
+      {photos.length > 1 && (
+        <div className="absolute bottom-3 right-3 flex space-x-1.5">
+          {photos.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePhotoClick(index)}
+              className={`w-1.5 h-1.5 rounded-full transition-all duration-200 ${
+                index === currentPhotoIndex 
+                  ? 'bg-white scale-125' 
+                  : 'bg-white/60 hover:bg-white/80'
+              }`}
+            />
+          ))}
         </div>
       )}
+
+      {/* Subtle label */}
+      <div className="absolute bottom-3 left-3">
+        <span className="text-white/80 text-xs font-medium">
+          {desaName}
+        </span>
+      </div>
     </div>
   );
 };
 
-// Update DesaCarouselSection component
+// Main Desa Section
 const DesaCarouselSection: React.FC<{ desa: DesaData }> = ({ desa }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [isTransitioning, setIsTransitioning] = React.useState(false);
-  const [extendedItems, setExtendedItems] = React.useState<AnggotaDesa[]>([]);
-
-  // Create extended array for infinite loop
-  React.useEffect(() => {
-    if (desa.anggota && desa.anggota.length > 0) {
-      const duplicatedItems = [
-        ...desa.anggota,
-        ...desa.anggota,
-        ...desa.anggota
-      ];
-      setExtendedItems(duplicatedItems);
-      setCurrentIndex(desa.anggota.length);
-    }
-  }, [desa.anggota]);
+  const itemsPerPage = 3; // Show 3 cards at once
+  const maxIndex = Math.max(0, desa.anggota.length - itemsPerPage);
 
   React.useEffect(() => {
-    if (!desa.anggota || desa.anggota.length === 0) return;
+    if (desa.anggota.length <= itemsPerPage) return;
     
     const timer = setInterval(() => {
-      handleNext();
-    }, 4000);
-                                                                                                                                                                                                                                                                                                                                                                
+      setCurrentIndex(prev => prev >= maxIndex ? 0 : prev + 1);
+    }, 5000);
+
     return () => clearInterval(timer);
-  }, [desa.anggota?.length, currentIndex]);
+  }, [desa.anggota.length, maxIndex]);
 
-  const handleNext = () => {
-    if (isTransitioning || desa.anggota.length === 0) return;
-    
-    setIsTransitioning(true);
-    setCurrentIndex((prevIndex) => prevIndex + 1);
-    
-    setTimeout(() => {
-      setIsTransitioning(false);
-      
-      if (currentIndex >= desa.anggota.length * 2 - 1) {
-        setCurrentIndex(desa.anggota.length);
-      }
-    }, 500);
-  };
-
-  const handlePrev = () => {
-    if (isTransitioning || desa.anggota.length === 0) return;
-    
-    setIsTransitioning(true);
-    setCurrentIndex((prevIndex) => prevIndex - 1);
-    
-    setTimeout(() => {
-      setIsTransitioning(false);
-      
-      if (currentIndex <= 0) {
-        setCurrentIndex(desa.anggota.length);
-      }
-    }, 500);
-  };
-
-  const handleDotClick = (index: number) => {
+  const handleNavigation = (direction: 'prev' | 'next') => {
     if (isTransitioning) return;
-    setCurrentIndex(index + desa.anggota.length);
-  };
-
-  const getDotIndex = () => {
-    return currentIndex % desa.anggota.length;
+    
+    setIsTransitioning(true);
+    
+    if (direction === 'next') {
+      setCurrentIndex(prev => prev >= maxIndex ? 0 : prev + 1);
+    } else {
+      setCurrentIndex(prev => prev <= 0 ? maxIndex : prev - 1);
+    }
+    
+    setTimeout(() => setIsTransitioning(false), 300);
   };
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-lg border border-blue-100 mb-8">
-      {/* Header Desa */}
-      <div className="text-center mb-6">
-        <h3 className="text-xl font-bold text-blue-900 mb-2">{desa.namaDesa}</h3>
-        <p className="text-sm text-blue-700">{desa.deskripsi}</p>
+    <div className="mb-16">
+      {/* Clean Header */}
+      <div className="mb-8">
+        <h3 className="text-2xl font-light text-gray-900 mb-2 tracking-wide">
+          {desa.namaDesa}
+        </h3>
+        <p className="text-gray-600 text-sm leading-relaxed max-w-2xl">
+          {desa.deskripsi}
+        </p>
       </div>
 
-      {/* Koordinator dan Foto Bersama Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Koordinator Card */}
-        <div className="flex items-center space-x-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <div className="relative w-16 h-16 flex-shrink-0">
-            <Image
-              src={desa.koordinator.foto}
-              alt={desa.koordinator.nama}
-              fill
-              className="object-cover rounded-full border-2 border-blue-300"
-            />
-          </div>
-          <div className="flex-1">
-            <h4 className="font-bold text-blue-900 text-sm">{desa.koordinator.nama}</h4>
-            <p className="text-xs text-blue-700 font-medium">{desa.koordinator.jabatan}</p>
-            <p className="text-xs text-blue-600">{desa.koordinator.prodi}</p>
-            <p className="text-xs text-blue-500">NIM: {desa.koordinator.nim}</p>
+      {/* Koordinator & Photo Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-12">
+        
+        {/* Koordinator - Clean Card */}
+        <div className="lg:col-span-2">
+          <div className="bg-white rounded-xl p-6 border border-gray-100 h-full">
+            <div className="flex items-start space-x-4">
+              <div className="relative w-14 h-14 flex-shrink-0">
+                <Image
+                  src={desa.koordinator.foto}
+                  alt={desa.koordinator.nama}
+                  fill
+                  className="object-cover rounded-full"
+                />
+              </div>
+              <div className="space-y-1">
+                <div className="text-xs text-blue-600 font-medium uppercase tracking-wide">
+                  Koordinator Desa
+                </div>
+                <h4 className="font-semibold text-gray-900">
+                  {desa.koordinator.nama}
+                </h4>
+                <p className="text-sm text-gray-600">
+                  {desa.koordinator.prodi}
+                </p>
+                <p className="text-xs text-gray-400">
+                  {desa.koordinator.nim}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Foto Bersama dengan Carousel */}
-        <FotoBersamaCarousel 
-          photos={desa.fotoBersama} 
-          desaName={desa.namaDesa}
-        />
+        {/* Foto Bersama */}
+        <div className="lg:col-span-3">
+          <FotoBersamaCarousel 
+            photos={desa.fotoBersama} 
+            desaName={desa.namaDesa}
+          />
+        </div>
       </div>
 
-      {/* Carousel Anggota */}
+      {/* Team Members Carousel */}
       <div className="relative">
-        <div className="relative border border-dashed border-blue-300 rounded-lg p-4 min-h-[410px]">
-          <div className="relative w-full h-[380px] overflow-hidden rounded-lg">
-            <div 
-              className={`flex h-full items-center ${isTransitioning ? 'transition-transform duration-500 ease-in-out' : ''}`}
-              style={{ transform: `translateX(-${currentIndex * 270}px)` }}
-            >
-              {extendedItems.map((anggota, index) => (
-                <AnggotaCard 
-                  key={`${anggota.id}-${index}`} 
-                  anggota={anggota} 
-                />
-              ))}
-            </div>
+        
+        {/* Section Title */}
+        <div className="flex items-center justify-between mb-6">
+          <h4 className="text-lg font-medium text-gray-900">
+            Tim Anggota
+          </h4>
+          <div className="text-sm text-gray-500">
+            {desa.anggota.length} anggota
+          </div>
+        </div>
+
+        {/* Carousel Container */}
+        <div className="relative overflow-hidden">
+          <div 
+            className={`flex transition-transform duration-500 ease-out ${isTransitioning ? '' : ''}`}
+            style={{ 
+              transform: `translateX(-${currentIndex * (240 + 24)}px)` // card width + margin
+            }}
+          >
+            {desa.anggota.map((anggota, index) => (
+              <AnggotaCard 
+                key={anggota.id} 
+                anggota={anggota} 
+              />
+            ))}
           </div>
 
-          {/* Navigation Buttons - hanya tampil jika anggota > 1 */}
-          {desa.anggota.length > 1 && (
+          {/* Minimal Navigation */}
+          {desa.anggota.length > itemsPerPage && (
             <>
               <button
-                onClick={handlePrev}
+                onClick={() => handleNavigation('prev')}
                 disabled={isTransitioning}
-                className="absolute left-2 top-1/2 -translate-y-1/2 w-[50px] h-[50px] bg-white/90 backdrop-blur-sm rounded-full shadow-[0px_2px_10px_rgba(59,130,246,0.6)] flex items-center justify-center hover:scale-105 hover:bg-white transition-all duration-200 disabled:opacity-50 z-10"
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-sm border border-gray-200 flex items-center justify-center hover:shadow-md hover:border-gray-300 transition-all duration-200 disabled:opacity-50 -translate-x-5"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-blue-600">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-gray-600">
                   <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </button>
 
               <button
-                onClick={handleNext}
+                onClick={() => handleNavigation('next')}
                 disabled={isTransitioning}
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-[50px] h-[50px] bg-white/90 backdrop-blur-sm rounded-full shadow-[0px_2px_10px_rgba(59,130,246,0.6)] flex items-center justify-center hover:scale-105 hover:bg-white transition-all duration-200 disabled:opacity-50 z-10"
+                className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-sm border border-gray-200 flex items-center justify-center hover:shadow-md hover:border-gray-300 transition-all duration-200 disabled:opacity-50 translate-x-5"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-blue-600">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-gray-600">
                   <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </button>
@@ -365,18 +292,22 @@ const DesaCarouselSection: React.FC<{ desa: DesaData }> = ({ desa }) => {
           )}
         </div>
 
-        {/* Dots Indicator - hanya tampil jika anggota > 1 */}
-        {desa.anggota.length > 1 && (
-          <div className="flex justify-center mt-3 gap-1">
-            {desa.anggota.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => handleDotClick(index)}
-                className={`w-2 h-2 rounded-full transition-colors duration-200 ${
-                  index === getDotIndex() ? 'bg-blue-500' : 'bg-blue-200 hover:bg-blue-300'
-                }`}
-              />
-            ))}
+        {/* Simple Progress Indicator */}
+        {desa.anggota.length > itemsPerPage && (
+          <div className="flex justify-center mt-8">
+            <div className="flex space-x-2">
+              {Array.from({ length: maxIndex + 1 }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                    index === currentIndex 
+                      ? 'bg-blue-500 w-6' 
+                      : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         )}
       </div>
@@ -386,10 +317,12 @@ const DesaCarouselSection: React.FC<{ desa: DesaData }> = ({ desa }) => {
 
 const DesaCarousel: React.FC<DesaCarouselProps> = ({ desaList }) => {
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <div className="flex flex-col space-y-8">
-        {desaList.map((desa) => (
-          <DesaCarouselSection key={desa.id} desa={desa} />
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="space-y-0 divide-y divide-gray-100">
+        {desaList.map((desa, index) => (
+          <div key={desa.id} className={index > 0 ? "pt-16" : ""}>
+            <DesaCarouselSection desa={desa} />
+          </div>
         ))}
       </div>
     </div>

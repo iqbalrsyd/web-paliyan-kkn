@@ -9,7 +9,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Next Test App',
+  title: 'KKN UGM Paliyan 2025',
   description: 'A Next.js application with carousel components',
 };
 
