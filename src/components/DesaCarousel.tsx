@@ -212,7 +212,7 @@ const DesaCarouselSection: React.FC<{ desa: DesaData }> = ({ desa }) => {
               </div>
               <div className="space-y-1">
                 <div className="text-xs text-blue-600 font-medium uppercase tracking-wide">
-                  Koordinator Desa
+                  Koordinator Sub Unit
                 </div>
                 <h4 className="font-semibold text-gray-900">
                   {desa.koordinator.nama}

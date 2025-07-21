@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { desaData } from './DesaSection';
 
 const InformasiGeografisSection = () => {
   const [hoveredDesa, setHoveredDesa] = useState<number | null>(null);
@@ -40,38 +41,22 @@ const InformasiGeografisSection = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const desaInfo = [
-    {
-      id: 1,
-      nama: "Desa Karangduwet",
-      deskripsi: "Desa Karangduwet terletak di bagian utara Kecamatan Paliyan dengan karakteristik wilayah yang didominasi oleh area pertanian dan pemukiman. Desa ini memiliki potensi wisata alam yang menarik dengan panorama persawahan yang hijau dan udara yang sejuk.",
-      foto: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800&h=600&fit=crop",
-      reverse: false,
-      color: "blue",
-      icon: "🌾",
-      highlight: "Wisata Alam & Pertanian"
-    },
-    {
-      id: 2,
-      nama: "Desa Grogol", 
-      deskripsi: "Desa Grogol berada di wilayah tengah Kecamatan Paliyan dengan topografi yang relatif datar. Desa ini dikenal dengan tradisi budaya yang masih kental dan masyarakat yang ramah. Mata pencaharian utama penduduk adalah bertani dan berternak.",
-      foto: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
-      reverse: true,
-      color: "teal",
-      icon: "🏛️",
-      highlight: "Budaya & Tradisi"
-    },
-    {
-      id: 3,
-      nama: "Desa Pampang",
-      deskripsi: "Desa Pampang terletak di bagian selatan Kecamatan Paliyan dengan kondisi geografis yang unik karena berbatasan langsung dengan kawasan karst Gunung Kidul. Desa ini memiliki potensi wisata gua dan sumber mata air alami yang jernih.",
-      foto: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop", 
-      reverse: false,
-      color: "emerald",
-      icon: "🏔️",
-      highlight: "Karst & Mata Air"
-    }
-  ];
+  // Transform data dari DesaSection untuk keperluan InformasiGeografisSection
+  const desaInfo = desaData.map(desa => ({
+    id: desa.id,
+    nama: desa.namaDesa,
+    deskripsi: desa.deskripsiGeografis,
+    foto: desa.fotoGeografis,
+    reverse: desa.reverse,
+    color: desa.color,
+    icon: desa.icon,
+    highlight: desa.highlight,
+    koordinator: desa.koordinator.nama,
+    anggotaCount: desa.anggota.length,
+    programCount: desa.programCount,
+    umkmCount: desa.umkmCount,
+    isMultipleKoordinator: desa.isMultipleKoordinator
+  }));
 
   const getColorClasses = (color: string, variant: 'primary' | 'secondary' | 'accent' | 'light') => {
     const colorMap = {
@@ -237,43 +222,107 @@ const InformasiGeografisSection = () => {
                     {desa.deskripsi}
                   </p>
                   
-                  {/* Enhanced Info Cards with Stagger Animation */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <div className={`${getColorClasses(desa.color, 'secondary')} rounded-xl p-3 sm:p-4 transform transition-all duration-300 hover:scale-105 hover:shadow-md ${
+                  {/* Enhanced Info Cards with Horizontal Layout */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mb-6 sm:mb-8">
+                    {/* Koordinator Card */}
+                    <div className={`${getColorClasses(desa.color, 'secondary')} rounded-lg p-2 sm:p-3 transform transition-all duration-300 hover:scale-105 hover:shadow-md ${
                       visibleCards.includes(desa.id) ? 'animate-slide-right' : 'opacity-0'
                     }`}
                     style={{ animationDelay: `${(index * 200) + 400}ms` }}>
-                      <div className="flex items-center mb-2">
-                        <div className={`w-6 h-6 sm:w-8 sm:h-8 ${getColorClasses(desa.color, 'primary')} rounded-lg flex items-center justify-center mr-3 animate-pulse`}>
-                          <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <div className="flex flex-col items-center text-center">
+                        <div className={`w-5 h-5 sm:w-6 sm:h-6 ${getColorClasses(desa.color, 'primary')} rounded-lg flex items-center justify-center mb-1 sm:mb-2 animate-pulse`}>
+                          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                           </svg>
                         </div>
-                        <div className={`text-xs sm:text-sm font-medium ${getColorClasses(desa.color, 'accent')}`}>
-                          Koordinator
+                        <div className={`text-xs font-medium ${getColorClasses(desa.color, 'accent')} mb-1`}>
+                          {desa.isMultipleKoordinator ? 'Koordinator' : 'Koordinator'}
                         </div>
-                      </div>
-                      <div className="text-sm sm:text-base lg:text-lg font-bold text-gray-900 ml-9 sm:ml-11">
-                        {desa.id === 1 ? "Bro Susanto" : desa.id === 2 ? "Dewi Sartika" : "Ahmad Fadli"}
+                        <div className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">
+                          {desa.isMultipleKoordinator ? (
+                            <div className="space-y-0.5">
+                              {desa.koordinator.split(' dan ').map((nama, idx) => (
+                                <div key={idx} className="text-xs">
+                                  {nama.trim()}
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            desa.koordinator
+                          )}
+                        </div>
                       </div>
                     </div>
                     
-                    <div className={`bg-gray-50 rounded-xl p-3 sm:p-4 transform transition-all duration-300 hover:scale-105 hover:shadow-md ${
+                    {/* Tim Mahasiswa Card */}
+                    <div className={`bg-gray-50 rounded-lg p-2 sm:p-3 transform transition-all duration-300 hover:scale-105 hover:shadow-md ${
                       visibleCards.includes(desa.id) ? 'animate-slide-left' : 'opacity-0'
                     }`}
-                    style={{ animationDelay: `${(index * 200) + 600}ms` }}>
-                      <div className="flex items-center mb-2">
-                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-600 rounded-lg flex items-center justify-center mr-3 animate-pulse">
-                          <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    style={{ animationDelay: `${(index * 200) + 500}ms` }}>
+                      <div className="flex flex-col items-center text-center">
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gray-600 rounded-lg flex items-center justify-center mb-1 sm:mb-2 animate-pulse">
+                          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zm-7 9a7 7 0 1114 0v3H3v-3z" />
                           </svg>
                         </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-600">Tim Mahasiswa</div>
-                      </div>
-                      <div className="text-sm sm:text-base lg:text-lg font-bold text-gray-900 ml-9 sm:ml-11">
-                        {desa.id === 1 ? "6" : desa.id === 2 ? "5" : "7"} Anggota
+                        <div className="text-xs font-medium text-gray-600 mb-1">Tim</div>
+                        <div className="text-xs sm:text-sm font-bold text-gray-900">
+                          {desa.anggotaCount} Anggota
+                        </div>
                       </div>
                     </div>
+
+                    {/* Program Kerja Card */}
+                    <div className={`${getColorClasses(desa.color, 'secondary')} rounded-lg p-2 sm:p-3 transform transition-all duration-300 hover:scale-105 hover:shadow-md ${
+                      visibleCards.includes(desa.id) ? 'animate-slide-right' : 'opacity-0'
+                    }`}
+                    style={{ animationDelay: `${(index * 200) + 600}ms` }}>
+                      <div className="flex flex-col items-center text-center">
+                        <div className={`w-5 h-5 sm:w-6 sm:h-6 ${getColorClasses(desa.color, 'primary')} rounded-lg flex items-center justify-center mb-1 sm:mb-2 animate-pulse`}>
+                          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <div className={`text-xs font-medium ${getColorClasses(desa.color, 'accent')} mb-1`}>
+                          Program
+                        </div>
+                        <div className="text-xs sm:text-sm font-bold text-gray-900">
+                          {desa.programCount} Kegiatan
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* UMKM Card */}
+                    <div className={`bg-gray-50 rounded-lg p-2 sm:p-3 transform transition-all duration-300 hover:scale-105 hover:shadow-md ${
+                      visibleCards.includes(desa.id) ? 'animate-slide-left' : 'opacity-0'
+                    }`}
+                    style={{ animationDelay: `${(index * 200) + 700}ms` }}>
+                      <div className="flex flex-col items-center text-center">
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gray-600 rounded-lg flex items-center justify-center mb-1 sm:mb-2 animate-pulse">
+                          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 6a2 2 0 114 0 2 2 0 01-4 0zm8 0a2 2 0 114 0 2 2 0 01-4 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <div className="text-xs font-medium text-gray-600 mb-1">UMKM</div>
+                        <div className="text-xs sm:text-sm font-bold text-gray-900">
+                          {desa.umkmCount} Unit
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Simple CTA Button */}
+                  <div className="mt-6 sm:mt-8">
+                    <a
+                      href={`#${desa.nama.toLowerCase().replace('desa ', '').replace(' ', '')}`}
+                      className={`group w-full flex items-center justify-center py-3 px-6 ${getColorClasses(desa.color, 'primary')} text-white rounded-xl font-semibold text-sm sm:text-base hover:shadow-xl transform hover:scale-105 transition-all duration-300 relative overflow-hidden`}
+                    >
+                      <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <span className="mr-2 relative z-10">📍 Kunjungi {desa.nama}</span>
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 transform transition-transform group-hover:translate-x-1 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -346,58 +395,6 @@ const InformasiGeografisSection = () => {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Enhanced CTA Section with Mobile Animations */}
-        <div className="mt-16 sm:mt-20 lg:mt-32 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 rounded-2xl sm:rounded-3xl blur-lg opacity-20 animate-gradient-shift"></div>
-          
-          <div className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-teal-700 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-16 text-white overflow-hidden animate-slide-up">
-            {/* Enhanced Background Pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <pattern id="grid-mobile" width="24" height="24" patternUnits="userSpaceOnUse">
-                    <path d="M0 24V0h24" fill="none" stroke="currentColor" strokeWidth="1"/>
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid-mobile)"/>
-              </svg>
-            </div>
-            
-            <div className="relative z-10 text-center">
-              <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-2xl mb-4 sm:mb-6 animate-bounce-in">
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                </svg>
-              </div>
-              
-              <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 animate-slide-up">
-                Jelajahi Lebih Dalam!
-              </h3>
-              
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-6 sm:mb-10 opacity-90 max-w-3xl mx-auto leading-relaxed animate-slide-up animation-delay-300">
-                Kunjungi halaman khusus setiap desa untuk mengetahui program kerja, UMKM, galeri kegiatan, dan informasi lengkap lainnya.
-              </p>
-              
-              <div className="flex flex-col gap-3 sm:gap-4 justify-center items-center animate-slide-up animation-delay-600">
-                {desaInfo.map((desa, index) => (
-                  <a
-                    key={desa.id}
-                    href={`#${desa.nama.toLowerCase().replace('desa ', '').replace(' ', '')}`}
-                    className={`group bg-white ${getColorClasses(desa.color, 'accent')} px-6 py-3 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl font-semibold hover:bg-gray-50 transition-all duration-300 w-full max-w-xs transform hover:scale-105 hover:shadow-xl flex items-center justify-center animate-slide-up`}
-                    style={{ animationDelay: `${600 + (index * 200)}ms` }}
-                  >
-                    <span className="mr-2 animate-wiggle">{desa.icon}</span>
-                    <span className="text-sm sm:text-base">{desa.nama}</span>
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
