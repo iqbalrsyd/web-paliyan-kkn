@@ -19,7 +19,8 @@ export const desaData = [
         koordinator: {
             nama: 'Aldi Donila Putra',
             jabatan: 'Koordinator Sub Unit 1 Karangduwet',
-            foto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+            foto: 'https://res.cloudinary.com/dvngobmdi/video/upload/v1753082796/naiozkcww1ev7e0zulxs.mp4',
+            isVideo: true,
             prodi: 'Teknik Elektro',
             nim: '20/123456/TK/78901'
         },
@@ -36,7 +37,8 @@ export const desaData = [
                     nim: '22/492543/SV/20544',
                     prodi: 'Ekonomika dan Bisnis',
                     jabatan: 'Kormasit & Logistik',
-                    foto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face'
+                    foto: 'https://res.cloudinary.com/dvngobmdi/video/upload/v1753082796/naiozkcww1ev7e0zulxs.mp4',
+                    isVideo: true
                 },
                 {
                     id: 2,
@@ -44,7 +46,8 @@ export const desaData = [
                     nim: '22/496212/PS/23052',
                     prodi: 'Psikologi',
                     jabatan: 'Anggota & Koor PDD',
-                    foto: 'https://images.unsplash.com/photo-1494790108755-2616c96e0e3f?w=200&h=200&fit=crop&crop=face'
+                    foto: 'https://res.cloudinary.com/dvngobmdi/video/upload/v1753086151/d2mdhwqukrubhmq0zdip.mp4',
+                    isVideo: true
                 },
                 {
                     id: 3,
@@ -52,7 +55,8 @@ export const desaData = [
                     nim: '22/492482/PN/17590',
                     prodi: 'Perikanan',
                     jabatan: 'Koor Logistik',
-                    foto: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face'
+                    foto: 'https://res.cloudinary.com/dvngobmdi/video/upload/v1753086152/gm9hnu1oiiidh5zbx8a5.mp4',
+                    isVideo: true
                 },
                 {
                     id: 4,
@@ -60,7 +64,8 @@ export const desaData = [
                     nim: '22/494667/KH/11250',
                     prodi: 'Kedokteran Hewan',
                     jabatan: 'Sekretaris',
-                    foto: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face'
+                    foto: 'https://res.cloudinary.com/dvngobmdi/video/upload/v1753086148/nwvpxdo1g0g8ahmstwmb.mp4',
+                    isVideo: true
                 },
                 {
                     id: 5,
@@ -68,7 +73,8 @@ export const desaData = [
                     nim: '22/506144/SV/22082',
                     prodi: 'Teknologi Rekayasa Internet',
                     jabatan: 'Kormater',
-                    foto: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face'
+                    foto: 'https://res.cloudinary.com/dvngobmdi/video/upload/v1753086492/lqb12mshz9qlc4nra77b.mp4',
+                    isVideo: true
                 },
                 {
                     id: 6,
@@ -76,15 +82,17 @@ export const desaData = [
                     nim: '22/496964/PA/21380',
                     prodi: 'Fisika',
                     jabatan: 'Humas',
-                    foto: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face'
+                    foto: 'https://res.cloudinary.com/dvngobmdi/video/upload/v1753086150/bz6tjfqlilbqvyxyy52d.mp4',
+                    isVideo: true
                 },
-                    {
+                {
                     id: 7,
                     nama: 'Nastiti Dita Rianti',
                     nim: '22/494079/PS/23013',
                     prodi: 'Psikologi',
                     jabatan: 'Anggota',
-                    foto: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face'
+                    foto: 'https://res.cloudinary.com/dvngobmdi/video/upload/v1753086149/rvk9mjunpr4twegda23p.mp4',
+                    isVideo: true
                 }
             ]
         },

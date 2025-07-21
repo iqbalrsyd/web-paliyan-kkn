@@ -9,6 +9,7 @@ interface AnggotaDesa {
   jabatan: string;
   prodi: string;
   foto: string;
+  isVideo?: boolean;
   nim?: string;
 }
 
@@ -18,6 +19,7 @@ interface Koordinator {
   foto: string;
   prodi: string;
   nim: string;
+  isVideo?: boolean;
 }
 
 interface DesaData {
@@ -41,14 +43,34 @@ const AnggotaCard: React.FC<{ anggota: AnggotaDesa }> = ({ anggota }) => (
       {/* Main Card */}
       <div className="relative w-full h-full rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:border-gray-200 group-hover:-translate-y-1">
         
-        {/* Image */}
+        {/* Image or Video */}
         <div className="relative w-full h-[200px] overflow-hidden">
-          <Image
-            src={anggota.foto}
-            alt={anggota.nama}
-            fill
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-          />
+          {anggota.isVideo ? (
+            <>
+              <video 
+                autoPlay 
+                muted 
+                loop 
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover"
+              >
+                <source src={anggota.foto} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div className="absolute bottom-2 right-2 bg-black/50 rounded-full p-1">
+                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 0C4.477 0 0 4.477 0 10C0 15.523 4.477 20 10 20C15.523 20 20 15.523 20 10C20 4.477 15.523 0 10 0ZM8 14.5V5.5L14 10L8 14.5Z" />
+                </svg>
+              </div>
+            </>
+          ) : (
+            <Image
+              src={anggota.foto}
+              alt={anggota.nama}
+              fill
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            />
+          )}
           {/* Subtle overlay */}
           <div className="absolute inset-0 bg-black/5 transition-opacity duration-300 group-hover:bg-black/0"></div>
         </div>
@@ -202,13 +224,26 @@ const DesaCarouselSection: React.FC<{ desa: DesaData }> = ({ desa }) => {
         <div className="lg:col-span-2">
           <div className="bg-white rounded-xl p-6 border border-gray-100 h-full">
             <div className="flex items-start space-x-4">
-              <div className="relative w-14 h-14 flex-shrink-0">
-                <Image
-                  src={desa.koordinator.foto}
-                  alt={desa.koordinator.nama}
-                  fill
-                  className="object-cover rounded-full"
-                />
+              <div className="relative w-14 h-14 flex-shrink-0 overflow-hidden rounded-full">
+                {desa.koordinator.isVideo ? (
+                  <video 
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover"
+                  >
+                    <source src={desa.koordinator.foto} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                ) : (
+                  <Image
+                    src={desa.koordinator.foto}
+                    alt={desa.koordinator.nama}
+                    fill
+                    className="object-cover"
+                  />
+                )}
               </div>
               <div className="space-y-1">
                 <div className="text-xs text-blue-600 font-medium uppercase tracking-wide">

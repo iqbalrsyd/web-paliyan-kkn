@@ -110,7 +110,7 @@ export default function NavBar() {
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor">
-              <path
+       \       <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
