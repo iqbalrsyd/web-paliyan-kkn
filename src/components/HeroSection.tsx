@@ -7,34 +7,19 @@ const HeroSection: React.FC = () => {
   // Array gambar yang akan berganti-ganti
   const heroImages = [
     {
-      src: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop',
-      alt: 'Tim KKN Bersama Masyarakat Desa',
-      category: 'Tim'
+      src: 'https://res.cloudinary.com/dvngobmdi/image/upload/v1753180529/e3nmwnxgocrzqmqhfojb.jpg',
+      alt: 'Penyambutan Kapanewon',
+      category: ''
     },
     {
-      src: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&h=600&fit=crop',
-      alt: 'Kegiatan Pemberdayaan Masyarakat',
-      category: 'Pemberdayaan'
+      src: 'https://res.cloudinary.com/dvngobmdi/image/upload/v1753180524/kpdauukwzd3ctws6xtci.jpg',
+      alt: 'Bakti Kampus',
+      category: ''
     },
     {
-      src: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=600&fit=crop',
-      alt: 'Program Pendidikan di Desa',
-      category: 'Pendidikan'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1543269664-647b3eec5d6b?w=800&h=600&fit=crop',
-      alt: 'Kegiatan Kesehatan Masyarakat',
-      category: 'Kesehatan'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&h=600&fit=crop',
-      alt: 'Workshop UMKM Lokal',
-      category: 'UMKM'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop',
-      alt: 'Gotong Royong Desa',
-      category: 'Gotong Royong'
+      src: 'https://res.cloudinary.com/dvngobmdi/image/upload/v1753180529/f6xrakhouycij82ipowz.jpg',
+      alt: 'Rapat Perdana',
+      category: ''
     }
   ];
 

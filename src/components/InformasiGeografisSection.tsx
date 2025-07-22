@@ -10,6 +10,27 @@ const InformasiGeografisSection = () => {
   const [scrollY, setScrollY] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
 
+  // Interface untuk desa info dengan multiple koordinator
+  interface DesaInfo {
+    id: number;
+    nama: string;
+    deskripsi: string;
+    foto: string;
+    reverse: boolean;
+    color: string;
+    icon: string;
+    highlight: string;
+    koordinator: string;
+    anggotaCount: number;
+    programCount: number;
+    umkmCount: number;
+    isMultipleKoordinator: boolean;
+    koordinator1?: string;
+    koordinator2?: string;
+    jabatan1?: string;
+    jabatan2?: string;
+  }
+
   // Intersection Observer untuk animasi scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -42,21 +63,59 @@ const InformasiGeografisSection = () => {
   }, []);
 
   // Transform data dari DesaSection untuk keperluan InformasiGeografisSection
-  const desaInfo = desaData.map(desa => ({
-    id: desa.id,
-    nama: desa.namaDesa,
-    deskripsi: desa.deskripsiGeografis,
-    foto: desa.fotoGeografis,
-    reverse: desa.reverse,
-    color: desa.color,
-    icon: desa.icon,
-    highlight: desa.highlight,
-    koordinator: desa.koordinator.nama,
-    anggotaCount: desa.anggota.length,
-    programCount: desa.programCount,
-    umkmCount: desa.umkmCount,
-    isMultipleKoordinator: desa.isMultipleKoordinator
-  }));
+  const desaInfo = desaData
+    .filter((desa, index, arr) => {
+      // Gabungkan kedua sub unit Grogol menjadi satu untuk Informasi Geografis
+      if (desa.namaDesa.includes('Grogol')) {
+        return desa.namaDesa.includes('Sub Unit 2'); // Hanya ambil sub unit 2 sebagai representasi
+      }
+      return true;
+    })
+    .map(desa => {
+      if (desa.namaDesa.includes('Grogol')) {
+        // Gabungkan data dari kedua sub unit Grogol
+        const subUnit3 = desaData.find(d => d.namaDesa.includes('Sub Unit 3'));
+        const totalAnggota = desa.anggota.length + (subUnit3?.anggota.length || 0);
+        const totalProgram = desa.programCount + (subUnit3?.programCount || 0);
+        const totalUmkm = desa.umkmCount + (subUnit3?.umkmCount || 0);
+        
+        return {
+          id: 2, // Tetap gunakan ID 2 untuk Grogol
+          nama: "Desa Grogol",
+          deskripsi: desa.deskripsiGeografis,
+          foto: desa.fotoGeografis,
+          reverse: desa.reverse,
+          color: desa.color,
+          icon: desa.icon,
+          highlight: "Budaya & UMKM",
+          koordinator: `${desa.koordinator.nama} & ${subUnit3?.koordinator.nama || 'Ahmad Lutfi Alfajar'}`,
+          anggotaCount: totalAnggota,
+          programCount: totalProgram,
+          umkmCount: totalUmkm,
+          isMultipleKoordinator: true,
+          koordinator1: desa.koordinator.nama,
+          koordinator2: subUnit3?.koordinator.nama || 'Ahmad Lutfi Alfajar',
+          jabatan1: desa.koordinator.jabatan,
+          jabatan2: subUnit3?.koordinator.jabatan || 'Koordinator Sub Unit 3 Grogol'
+        };
+      }
+      
+      return {
+        id: desa.id,
+        nama: desa.namaDesa,
+        deskripsi: desa.deskripsiGeografis,
+        foto: desa.fotoGeografis,
+        reverse: desa.reverse,
+        color: desa.color,
+        icon: desa.icon,
+        highlight: desa.highlight,
+        koordinator: desa.koordinator.nama,
+        anggotaCount: desa.anggota.length,
+        programCount: desa.programCount,
+        umkmCount: desa.umkmCount,
+        isMultipleKoordinator: desa.isMultipleKoordinator
+      };
+    });
 
   const getColorClasses = (color: string, variant: 'primary' | 'secondary' | 'accent' | 'light') => {
     const colorMap = {
@@ -77,9 +136,15 @@ const InformasiGeografisSection = () => {
         secondary: 'bg-emerald-50',
         accent: 'text-emerald-600',
         light: 'from-emerald-400/20 to-emerald-600/20'
+      },
+      purple: {
+        primary: 'bg-purple-600',
+        secondary: 'bg-purple-50',
+        accent: 'text-purple-600',
+        light: 'from-purple-400/20 to-purple-600/20'
       }
     };
-    return colorMap[color as keyof typeof colorMap][variant];
+    return colorMap[color as keyof typeof colorMap]?.[variant] || colorMap.blue[variant];
   };
 
   return (
@@ -164,7 +229,7 @@ const InformasiGeografisSection = () => {
           </h2>
           
           <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed animate-slide-up animation-delay-300">
-            Mengenal lebih dekat tiga desa sasaran KKN-PPM UGM di Kecamatan Paliyan, Kabupaten Gunung Kidul
+            Mengenal lebih dekat desa-desa sasaran KKN-PPM UGM di Kecamatan Paliyan, Kabupaten Gunung Kidul
           </p>
         </div>
 
@@ -239,10 +304,20 @@ const InformasiGeografisSection = () => {
                           {desa.isMultipleKoordinator ? 'Koordinator' : 'Koordinator'}
                         </div>
                         <div className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">
-                          {desa.isMultipleKoordinator ? (
+                          {desa.isMultipleKoordinator && desa.koordinator1 && desa.koordinator2 ? (
+                            <div className="space-y-1">
+                              <div className="text-xs leading-tight">
+                                {desa.koordinator1}
+                              </div>
+                              <div className="text-xs text-gray-500">&</div>
+                              <div className="text-xs leading-tight">
+                                {desa.koordinator2}
+                              </div>
+                            </div>
+                          ) : desa.isMultipleKoordinator ? (
                             <div className="space-y-0.5">
-                              {desa.koordinator.split(' dan ').map((nama, idx) => (
-                                <div key={idx} className="text-xs">
+                              {desa.koordinator.split(' & ').map((nama, idx) => (
+                                <div key={idx} className="text-xs leading-tight">
                                   {nama.trim()}
                                 </div>
                               ))}

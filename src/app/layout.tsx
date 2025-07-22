@@ -9,8 +9,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'KKN UGM Paliyan 2025',
-  description: 'A Next.js application with carousel components',
+  title: 'Paliyan Menawan 2025',
+  description: 'Website for Paliyan Menawan KKN PPM UGM 2025',
 };
 
 export default function RootLayout({
