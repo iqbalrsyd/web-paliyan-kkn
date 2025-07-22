@@ -389,7 +389,7 @@ const InformasiGeografisSection = () => {
                   {/* Simple CTA Button */}
                   <div className="mt-6 sm:mt-8">
                     <a
-                      href={`#${desa.nama.toLowerCase().replace('desa ', '').replace(' ', '')}`}
+                      href={`/${desa.nama.toLowerCase().replace('desa ', '').replace(' ', '')}`}
                       className={`group w-full flex items-center justify-center py-3 px-6 ${getColorClasses(desa.color, 'primary')} text-white rounded-xl font-semibold text-sm sm:text-base hover:shadow-xl transform hover:scale-105 transition-all duration-300 relative overflow-hidden`}
                     >
                       <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

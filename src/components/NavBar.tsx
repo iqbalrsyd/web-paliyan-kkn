@@ -88,21 +88,6 @@ export default function NavBar() {
           </Link>
         </div>
 
-        {/* CTA Button */}
-        <div className="hidden lg:flex items-center">
-          <Link
-            href="/kontak"
-            className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-500 text-white px-5 xl:px-7 py-2.5 rounded-full font-medium text-sm xl:text-base group">
-            <span className="relative z-10 flex items-center">
-              Hubungi Kami
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </span>
-            <span className="absolute inset-0 bg-blue-700 w-full h-full transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-out"></span>
-          </Link>
-        </div>
-
         {/* Mobile Menu Button - Compact version */}
         <div className="lg:hidden">
           <button 
@@ -212,20 +197,6 @@ export default function NavBar() {
                 <span className="font-medium text-base">Pampang</span>
               </Link>
             </nav>
-          </div>
-          
-          {/* Mobile CTA - enhanced for touch */}
-          <div className="p-4 pt-3 border-t border-blue-50">
-            <Link
-              href="/kontak"
-              className="flex items-center justify-center w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-4 px-5 rounded-xl hover:shadow-lg active:shadow-inner active:from-blue-800 active:to-blue-700 hover:from-blue-700 hover:to-blue-600 transition-all duration-300 font-medium text-base touch-manipulation"
-              onClick={() => setMenuOpen(false)}
-            >
-              <span>Hubungi Kami</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </Link>
           </div>
         </div>
       </div>

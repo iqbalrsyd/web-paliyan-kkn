@@ -17,7 +17,7 @@ const HeroSection: React.FC = () => {
       category: ''
     },
     {
-      src: 'https://res.cloudinary.com/dvngobmdi/image/upload/v1753180529/f6xrakhouycij82ipowz.jpg',
+      src: 'https://res.cloudinary.com/dvngobmdi/image/upload/v1753180529/ffkgy6u28bn0xpbxvuuh.jpg',
       alt: 'Rapat Perdana',
       category: ''
     }
