@@ -295,7 +295,6 @@ const DesaCarouselSection: React.FC<{ desa: DesaData, index: number }> = ({ desa
   const [isMobile, setIsMobile] = React.useState(false);
   const [isVisible, setIsVisible] = React.useState(false);
   const sectionRef = React.useRef<HTMLDivElement>(null);
-  const visibleItems = 3; // Number of visible cards (1 center + 1 on each side)
   
   // Card dimensions
   const cardWidth = isMobile ? 220 : 240;

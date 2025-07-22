@@ -27,8 +27,8 @@ export const desaData = [
         },
             fotoBersama: [
             'https://res.cloudinary.com/dvngobmdi/image/upload/v1753172659/f0o187d4dxudifwdad1b.jpg',
-            'https://res.cloudinary.com/dvngobmdi/image/upload/c_crop,w_6000,h_4000,y_500,g_north/v1753172615/n9evarylj2rg2yjwbfjk.jpg',
-            'https://res.cloudinary.com/dvngobmdi/image/upload/c_crop,w_6000,h_4000,y_500,g_north/v1753172565/eg3vgpu0sf5prlj7s13f.jpg'
+            'https://res.cloudinary.com/dvngobmdi/image/upload/v1753172615/n9evarylj2rg2yjwbfjk.jpg',
+            'https://res.cloudinary.com/dvngobmdi/image/upload/v1753172565/eg3vgpu0sf5prlj7s13f.jpg'
         ],
             anggota: [
                 {
@@ -112,7 +112,7 @@ export const desaData = [
             koordinator: {
                 nama: 'Izzatullah Ahmad Muqaffa',
                 jabatan: 'Koordinator Sub Unit 2 Grogol',
-                foto: 'https://res.cloudinary.com/dvngobmdi/image/upload/v1753181890/fgrjqb8ltujnq2bojyks.jpg',
+                foto: 'https://res.cloudinary.com/dvngobmdi/image/upload/v1753088162/sqzlhhcge2vj5lnelmyq.jpg',
                 prodi: 'Arsitektur',
                 nim: '22/498772/TK/54722'
             },
