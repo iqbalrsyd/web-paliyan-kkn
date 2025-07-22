@@ -112,7 +112,7 @@ export const desaData = [
             koordinator: {
                 nama: 'Izzatullah Ahmad Muqaffa',
                 jabatan: 'Koordinator Sub Unit 2 Grogol',
-                foto: 'https://res.cloudinary.com/dvngobmdi/image/upload/v1753088162/sqzlhhcge2vj5lnelmyq.jpg',
+                foto: 'https://res.cloudinary.com/dvngobmdi/image/upload/v1753181890/fgrjqb8ltujnq2bojyks.jpg',
                 prodi: 'Arsitektur',
                 nim: '22/498772/TK/54722'
             },
