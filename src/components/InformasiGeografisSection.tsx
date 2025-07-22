@@ -4,32 +4,32 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { desaData } from './DesaSection';
 
+// Interface untuk desa info dengan multiple koordinator
+interface DesaInfo {
+  id: number;
+  nama: string;
+  deskripsi: string;
+  foto: string;
+  reverse: boolean;
+  color: string;
+  icon: string;
+  highlight: string;
+  koordinator: string;
+  anggotaCount: number;
+  programCount: number;
+  umkmCount: number;
+  isMultipleKoordinator: boolean;
+  koordinator1?: string;
+  koordinator2?: string;
+  jabatan1?: string;
+  jabatan2?: string;
+}
+
 const InformasiGeografisSection = () => {
   const [hoveredDesa, setHoveredDesa] = useState<number | null>(null);
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
   const [scrollY, setScrollY] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
-
-  // Interface untuk desa info dengan multiple koordinator
-  interface DesaInfo {
-    id: number;
-    nama: string;
-    deskripsi: string;
-    foto: string;
-    reverse: boolean;
-    color: string;
-    icon: string;
-    highlight: string;
-    koordinator: string;
-    anggotaCount: number;
-    programCount: number;
-    umkmCount: number;
-    isMultipleKoordinator: boolean;
-    koordinator1?: string;
-    koordinator2?: string;
-    jabatan1?: string;
-    jabatan2?: string;
-  }
 
   // Intersection Observer untuk animasi scroll
   useEffect(() => {
@@ -63,8 +63,8 @@ const InformasiGeografisSection = () => {
   }, []);
 
   // Transform data dari DesaSection untuk keperluan InformasiGeografisSection
-  const desaInfo = desaData
-    .filter((desa, index, arr) => {
+  const desaInfo: DesaInfo[] = desaData
+    .filter((desa) => {
       // Gabungkan kedua sub unit Grogol menjadi satu untuk Informasi Geografis
       if (desa.namaDesa.includes('Grogol')) {
         return desa.namaDesa.includes('Sub Unit 2'); // Hanya ambil sub unit 2 sebagai representasi

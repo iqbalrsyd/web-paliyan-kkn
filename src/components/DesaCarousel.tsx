@@ -289,13 +289,12 @@ const FotoBersamaCarousel: React.FC<{
 };
 
 // Main Desa Section
-const DesaCarouselSection: React.FC<{ desa: DesaData, index: number }> = ({ desa, index }) => {
+const DesaCarouselSection: React.FC<{ desa: DesaData, index: number }> = ({ desa, index: _index }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [isTransitioning, setIsTransitioning] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
   const [isVisible, setIsVisible] = React.useState(false);
   const sectionRef = React.useRef<HTMLDivElement>(null);
-  const maxIndex = desa.anggota.length - 1;
   const visibleItems = 3; // Number of visible cards (1 center + 1 on each side)
   
   // Card dimensions
@@ -305,6 +304,8 @@ const DesaCarouselSection: React.FC<{ desa: DesaData, index: number }> = ({ desa
 
   // Intersection Observer untuk sticky badge
   React.useEffect(() => {
+    const currentSection = sectionRef.current;
+    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -317,13 +318,13 @@ const DesaCarouselSection: React.FC<{ desa: DesaData, index: number }> = ({ desa
       }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    if (currentSection) {
+      observer.observe(currentSection);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (currentSection) {
+        observer.unobserve(currentSection);
       }
     };
   }, []);
@@ -495,7 +496,7 @@ const DesaCarouselSection: React.FC<{ desa: DesaData, index: number }> = ({ desa
                         fill
                         sizes="64px"
                         className="object-cover transition-transform duration-700 group-hover:scale-125"
-                        onError={(e) => {
+                        onError={() => {
                           console.log('Koordinator image failed to load:', desa.koordinator.foto);
                         }}
                       />
