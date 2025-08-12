@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 import DesaCarousel from './DesaCarousel';
 
 // Data untuk DPL dan Kormanit - Side by side cards
@@ -93,10 +94,11 @@ const PimpinanSection: React.FC = () => {
                                 </div>
                             ) : (
                                 <div className="relative w-full h-full rounded-xl overflow-hidden border-3 border-white shadow-lg">
-                                    <img
+                                    <Image
                                         src={pimpinanData.dpl.foto}
                                         alt={pimpinanData.dpl.nama}
-                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                        fill
+                                        className="object-cover group-hover:scale-110 transition-transform duration-500"
                                     />
                                 </div>
                             )}
@@ -138,7 +140,7 @@ const PimpinanSection: React.FC = () => {
                     {/* Photo Card */}
                     <div className="relative bg-white/70 backdrop-blur-xl rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 group-hover:scale-105 max-w-[280px] mx-auto">
                         <div className="aspect-square p-4">
-                            {pimpinanData.dpl.isVideo ? (
+                            {pimpinanData.kormanit.isVideo ? (
                                 <div className="relative w-full h-full overflow-hidden rounded-xl">
                                     <video 
                                         autoPlay 
@@ -158,10 +160,11 @@ const PimpinanSection: React.FC = () => {
                                 </div>
                             ) : (
                                 <div className="relative w-full h-full rounded-xl overflow-hidden border-4 border-white shadow-lg">
-                                    <img
+                                    <Image
                                         src={pimpinanData.kormanit.foto}
                                         alt={pimpinanData.kormanit.nama}
-                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                        fill
+                                        className="object-cover group-hover:scale-110 transition-transform duration-500"
                                     />
                                 </div>
                             )}

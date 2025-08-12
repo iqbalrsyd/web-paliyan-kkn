@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { websiteData, WebsiteData, getWebsitesByDesa, getDesaWebsiteInfo } from '@/data/websiteData';
+import Image from 'next/image';
+import { getWebsitesByDesa, getDesaWebsiteInfo } from '@/data/websiteData';
 
 interface DesaWebsiteCarouselProps {
   desaName: string;
@@ -103,10 +104,12 @@ const DesaWebsiteCarousel: React.FC<DesaWebsiteCarouselProps> = ({ desaName }) =
                     
                     {/* Screenshot */}
                     <div className="relative h-64 lg:h-full overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
-                      <img 
+                      <Image 
                         src={website.screenshot} 
                         alt={website.name}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                       />
                       
                       {/* Status Badge */}
@@ -211,6 +214,22 @@ const DesaWebsiteCarousel: React.FC<DesaWebsiteCarouselProps> = ({ desaName }) =
                 }`}
               />
             ))}
+          </div>
+        )}
+
+        {/* Auto-play Control */}
+        {totalSlides > 1 && (
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={() => setIsAutoPlay(!isAutoPlay)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                isAutoPlay 
+                  ? 'bg-indigo-600 text-white hover:bg-indigo-700' 
+                  : 'bg-white text-gray-600 border-2 border-gray-200 hover:border-indigo-300 hover:text-indigo-600'
+              }`}
+            >
+              {isAutoPlay ? '⏸️ Jeda Otomatis' : '▶️ Putar Otomatis'}
+            </button>
           </div>
         )}
       </div>

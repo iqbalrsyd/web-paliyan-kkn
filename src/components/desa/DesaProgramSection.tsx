@@ -126,12 +126,11 @@ const DesaProgramSection: React.FC<DesaProgramSectionProps> = ({ desaName }) => 
   const renderPagination = () => {
     if (totalPages <= 1) return null;
 
-    const pages = [];
     const maxVisiblePages = 5;
     
     // Calculate start and end pages
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
     
     // Adjust start page if we're near the end
     if (endPage - startPage + 1 < maxVisiblePages) {

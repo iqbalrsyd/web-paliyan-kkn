@@ -97,12 +97,11 @@ const DesaUmkmSection: React.FC<DesaUmkmSectionProps> = ({ desaName }) => {
   const renderPagination = () => {
     if (totalPages <= 1) return null;
 
-    const pages = [];
     const maxVisiblePages = 5;
     
     // Calculate start and end pages
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
     
     // Adjust start page if we're near the end
     if (endPage - startPage + 1 < maxVisiblePages) {
@@ -354,7 +353,7 @@ const DesaUmkmSection: React.FC<DesaUmkmSectionProps> = ({ desaName }) => {
         {/* Pagination */}
         {renderPagination()}
 
-        {/* Modal Detail */}
+        {/* Modal Detail - Rest of the modal code remains the same */}
         {showModal && selectedUmkm && (
           <div className="fixed inset-0 z-50 overflow-y-auto">
             <div 
