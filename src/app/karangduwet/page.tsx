@@ -6,12 +6,6 @@ import DesaUmkmSection from '../../components/desa/DesaUmkmSection';
 import DesaWebsiteCarouselProps from '../../components/desa/DesaWebsiteCarousel';
 
 const KarangduwetPage = () => {
-  const desaData = {
-    nama: "Karangduwet",
-    deskripsi: "Desa Karangduwet merupakan salah satu desa di Kecamatan Paliyan yang memiliki potensi pertanian dan pariwisata yang menarik.",
-    // Data spesifik untuk Karangduwet akan ditambahkan di sini
-  };
-
   return (
     <div className="min-h-screen w-full">
       <NavBar />
