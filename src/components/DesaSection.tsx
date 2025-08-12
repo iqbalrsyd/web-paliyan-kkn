@@ -3,7 +3,191 @@
 import React from 'react';
 import DesaCarousel from './DesaCarousel';
 
-// Data desa yang bisa digunakan di komponen lain
+// Data untuk DPL dan Kormanit - Side by side cards
+export const pimpinanData = {
+    dpl: {
+        nama: 'Prof. Dr. Ir. Fatchan Nurrochmad, M.Agr',
+        jabatan: 'Dosen Pembimbing Lapangan',
+        fakultas: 'Fakultas Teknik',
+        foto: 'https://res.cloudinary.com/dvngobmdi/video/upload/v1755022486/yf8lrydjz4mkb7ythlay.mp4',
+        isVideo: true
+    },
+    kormanit: {
+        nama: 'Berliana Ayu Iriyanti',
+        jabatan: 'Koordinator Mahasiswa Unit',
+        prodi: 'Teknik Geodesi',
+        nim: '22/504960/TK/55240',
+        foto: 'https://res.cloudinary.com/dvngobmdi/video/upload/v1753088322/fxuvljgh0bjr4ux1nxkf.mp4',
+        isVideo: true
+    }
+};
+
+// Komponen untuk section Pimpinan - Side by side cards
+const PimpinanSection: React.FC = () => {
+    return (
+        <div className="mb-16 relative">
+            {/* Header Section */}
+            <div className="text-center mb-12">
+                <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-full text-blue-700 text-sm font-semibold mb-4">
+                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Struktur Kepemimpinan
+                </div>
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent">
+                    Pembimbing & Koordinator
+                </h3>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                    Tim pembimbing dan koordinator yang memimpin pelaksanaan KKN-PPM UGM di Kecamatan Paliyan
+                </p>
+            </div>
+
+            {/* Cards Container */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
+                
+                {/* DPL Card */}
+                <div className="group relative">
+                    <div className="text-center mb-6">
+                        {/* Badge */}
+                        <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-bold uppercase tracking-wider shadow-sm mb-4">
+                            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
+                            </svg>
+                            Dosen Pembimbing
+                        </div>
+                        
+                        {/* Info di atas card */}
+                        <div className="mb-6">
+                            <h4 className="font-bold text-gray-900 text-xl mb-2">
+                                {pimpinanData.dpl.nama}
+                            </h4>
+                            <p className="text-blue-600 font-semibold text-base mb-2">
+                                {pimpinanData.dpl.jabatan}
+                            </p>
+                            <p className="text-gray-600 text-sm">
+                                {pimpinanData.dpl.fakultas}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Photo Card */}
+                    <div className="relative bg-white/70 backdrop-blur-xl rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 group-hover:scale-105 max-w-[280px] mx-auto">
+                        <div className="aspect-square p-4">
+                            {pimpinanData.dpl.isVideo ? (
+                                <div className="relative w-full h-full overflow-hidden rounded-xl">
+                                    <video 
+                                        autoPlay 
+                                        muted 
+                                        loop 
+                                        playsInline
+                                        className="absolute inset-0 w-full h-full object-cover"
+                                    >
+                                        <source src={pimpinanData.dpl.foto} type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
+                                    <div className="absolute bottom-3 right-3 bg-white rounded-full p-1.5 shadow-sm">
+                                        <svg className="w-3 h-3 text-gray-800" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 0C4.477 0 0 4.477 0 10C0 15.523 4.477 20 10 20C15.523 20 20 15.523 20 10C20 4.477 15.523 0 10 0ZM8 14.5V5.5L14 10L8 14.5Z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="relative w-full h-full rounded-xl overflow-hidden border-3 border-white shadow-lg">
+                                    <img
+                                        src={pimpinanData.dpl.foto}
+                                        alt={pimpinanData.dpl.nama}
+                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                        
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-blue-500/10 to-transparent pointer-events-none"></div>
+                    </div>
+                </div>
+
+                {/* Kormanit Card */}
+                <div className="group relative">
+                    <div className="text-center mb-6">
+                        {/* Badge */}
+                        <div className="inline-flex items-center px-4 py-2 rounded-full bg-indigo-100 text-indigo-800 text-sm font-bold uppercase tracking-wider shadow-sm mb-4">
+                            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+                            </svg>
+                            Koordinator Unit
+                        </div>
+                        
+                        {/* Info di atas card */}
+                        <div className="mb-6">
+                            <h4 className="font-bold text-gray-900 text-xl mb-2">
+                                {pimpinanData.kormanit.nama}
+                            </h4>
+                            <p className="text-indigo-600 font-semibold text-base mb-2">
+                                {pimpinanData.kormanit.jabatan}
+                            </p>
+                            <p className="text-gray-600 text-sm mb-1">
+                                {pimpinanData.kormanit.prodi}
+                            </p>
+                            <p className="text-gray-500 text-sm">
+                                {pimpinanData.kormanit.nim}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Photo Card */}
+                    <div className="relative bg-white/70 backdrop-blur-xl rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 group-hover:scale-105 max-w-[280px] mx-auto">
+                        <div className="aspect-square p-4">
+                            {pimpinanData.dpl.isVideo ? (
+                                <div className="relative w-full h-full overflow-hidden rounded-xl">
+                                    <video 
+                                        autoPlay 
+                                        muted 
+                                        loop 
+                                        playsInline
+                                        className="absolute inset-0 w-full h-full object-cover"
+                                    >
+                                        <source src={pimpinanData.kormanit.foto} type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
+                                    <div className="absolute bottom-3 right-3 bg-white rounded-full p-1.5 shadow-sm">
+                                        <svg className="w-3 h-3 text-gray-800" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 0C4.477 0 0 4.477 0 10C0 15.523 4.477 20 10 20C15.523 20 20 15.523 20 10C20 4.477 15.523 0 10 0ZM8 14.5V5.5L14 10L8 14.5Z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="relative w-full h-full rounded-xl overflow-hidden border-4 border-white shadow-lg">
+                                    <img
+                                        src={pimpinanData.kormanit.foto}
+                                        alt={pimpinanData.kormanit.nama}
+                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                        
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-indigo-500/10 to-transparent pointer-events-none"></div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Simple Decorative Separator */}
+            <div className="mt-16 flex items-center justify-center">
+                <div className="flex items-center space-x-4">
+                    <div className="w-16 h-0.5 bg-gradient-to-r from-transparent to-blue-400"></div>
+                    <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div>
+                    <div className="w-24 h-0.5 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400"></div>
+                    <div className="w-2 h-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
+                    <div className="w-16 h-0.5 bg-gradient-to-r from-purple-400 to-transparent"></div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// Data desa yang sudah ada (tetap sama)
 export const desaData = [
     {
         id: 1,
@@ -367,60 +551,23 @@ export const desaData = [
 const DesaSection = () => {
     return (
         <section id="profil" className="py-8 sm:py-12 lg:py-16 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 w-full relative overflow-hidden">
-            {/* Modern Animated Background Elements */}
+            {/* Background elements */}
             <div className="absolute inset-0 overflow-hidden">
-                {/* Layered gradient backgrounds for depth */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue-100/20 via-transparent to-purple-100/20"></div>
-                <div className="absolute inset-0 bg-gradient-to-bl from-indigo-100/30 via-transparent to-pink-100/20"></div>
-                
-                {/* Modern geometric shapes */}
-                <div className="absolute top-10 left-10 w-40 h-40 bg-gradient-to-br from-blue-200/20 to-indigo-300/10 rounded-3xl transform rotate-12 animate-float blur-sm"></div>
-                <div className="absolute top-20 right-16 w-32 h-32 bg-gradient-to-tr from-purple-200/25 to-pink-200/15 rounded-full animate-float-delayed blur-sm"></div>
-                <div className="absolute bottom-20 left-1/4 w-24 h-24 bg-gradient-to-br from-indigo-200/30 to-blue-300/20 rounded-2xl transform -rotate-45 animate-bounce-slow blur-sm"></div>
-                <div className="absolute bottom-32 right-1/3 w-28 h-28 bg-gradient-to-tl from-pink-200/20 to-purple-300/25 rounded-full animate-pulse blur-sm"></div>
-                
-                {/* Modern mesh gradient overlay */}
-                <div className="absolute top-1/3 left-1/2 w-64 h-64 bg-gradient-radial from-blue-300/10 via-indigo-200/5 to-transparent rounded-full animate-float-slow blur-xl"></div>
-                <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-gradient-radial from-purple-300/15 via-pink-200/8 to-transparent rounded-full animate-float-reverse blur-xl"></div>
-                
-                {/* Floating particles with modern style */}
-                <div className="absolute inset-0">
-                    {[...Array(8)].map((_, i) => (
-                        <div 
-                            key={i}
-                            className={`absolute w-1.5 h-1.5 bg-gradient-to-r from-blue-400/60 to-purple-400/60 rounded-full animate-float-particle-${i % 3 + 1} blur-[0.5px]`}
-                            style={{
-                                left: `${15 + (i * 10)}%`,
-                                top: `${25 + (i * 7)}%`,
-                                animationDelay: `${i * 0.7}s`
-                            }}
-                        ></div>
-                    ))}
-                </div>
-                
-                {/* Modern grid pattern overlay */}
-                <div className="absolute inset-0 opacity-5">
-                    <div className="w-full h-full" style={{
-                        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.3) 1px, transparent 0)`,
-                        backgroundSize: '40px 40px'
-                    }}></div>
-                </div>
+                <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-200/20 to-indigo-200/10 rounded-full blur-3xl animate-float"></div>
+                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-200/15 to-pink-200/10 rounded-full blur-3xl animate-float-delayed"></div>
+                <div className="absolute top-1/3 left-1/4 w-32 h-32 bg-gradient-to-br from-indigo-200/20 to-blue-200/10 rounded-full blur-2xl animate-bounce-slow"></div>
             </div>
 
             <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                {/* Enhanced Header with Animation */}
-                <div className="text-center mb-8 sm:mb-12">
-                    {/* Main Title with Gradient and Animation */}
+                {/* Enhanced Header */}
+                <div className="text-center mb-16">
                     <div className="relative">
-                        {/* Background blur effect behind title */}
                         <div className="absolute inset-0 bg-white/10 backdrop-blur-xl rounded-3xl transform scale-110 opacity-60"></div>
-                        
                         <div className="relative py-8 px-6">
                             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent animate-fade-in-up">
                                 Tim KKN-PPM UGM Paliyan 2025
                             </h2>
                             
-                            {/* Modern decorative elements */}
                             <div className="flex justify-center items-center space-x-4 mb-6">
                                 <div className="w-8 h-0.5 bg-gradient-to-r from-transparent to-blue-400 animate-expand-width"></div>
                                 <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-pulse"></div>
@@ -429,24 +576,40 @@ const DesaSection = () => {
                                 <div className="w-8 h-0.5 bg-gradient-to-r from-purple-400 to-transparent animate-expand-width"></div>
                             </div>
                             
-                            {/* Subtitle with modern styling */}
                             <div className="relative">
                                 <p className="text-blue-700 max-w-3xl mx-auto text-sm sm:text-base lg:text-lg leading-relaxed animate-fade-in-up-delayed font-medium">
                                     Mahasiswa KKN-PPM UGM yang bertugas di 3 desa di Kecamatan Paliyan, 
                                     Kabupaten Gunung Kidul untuk periode 2025.
                                 </p>
-                                
-                                {/* Modern accent line under subtitle */}
                                 <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-20 h-0.5 bg-gradient-to-r from-transparent via-indigo-300 to-transparent animate-fade-in-scale"></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
+                {/* Section Pimpinan */}
+                <PimpinanSection />
+                
+                {/* Header untuk Sub Unit */}
+                <div className="text-center mb-12">
+                    <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-full text-indigo-700 text-sm font-semibold mb-4">
+                        <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1V8zm8 0a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1h-6a1 1 0 01-1-1V8z" clipRule="evenodd" />
+                        </svg>
+                        Sub Unit KKN
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-900 bg-clip-text text-transparent">
+                        Tim Sub Unit Desa
+                    </h3>
+                    <p className="text-gray-600 max-w-2xl mx-auto">
+                        Tim mahasiswa yang bertugas di setiap desa dengan program kerja yang spesifik dan terukur
+                    </p>
+                </div>
+                
                 <DesaCarousel desaList={desaData} />
             </div>
 
-            {/* Custom CSS for animations */}
+            {/* Custom CSS untuk animations */}
             <style jsx>{`
                 @keyframes float {
                     0%, 100% { transform: translateY(0px); }
@@ -466,12 +629,6 @@ const DesaSection = () => {
                 @keyframes spin-slow {
                     from { transform: rotate(45deg); }
                     to { transform: rotate(405deg); }
-                }
-                
-                @keyframes wiggle {
-                    0%, 100% { transform: rotate(-12deg); }
-                    25% { transform: rotate(-15deg); }
-                    75% { transform: rotate(-9deg); }
                 }
                 
                 @keyframes fade-in-up {
@@ -520,35 +677,14 @@ const DesaSection = () => {
                     to { width: 6rem; }
                 }
                 
-                @keyframes float-particle-1 {
-                    0%, 100% { transform: translate(0, 0); opacity: 0.3; }
-                    33% { transform: translate(10px, -15px); opacity: 0.7; }
-                    66% { transform: translate(-5px, -8px); opacity: 0.4; }
-                }
-                
-                @keyframes float-particle-2 {
-                    0%, 100% { transform: translate(0, 0); opacity: 0.4; }
-                    50% { transform: translate(-8px, -20px); opacity: 0.8; }
-                }
-                
-                @keyframes float-particle-3 {
-                    0%, 100% { transform: translate(0, 0); opacity: 0.2; }
-                    25% { transform: translate(15px, -10px); opacity: 0.6; }
-                    75% { transform: translate(-10px, -25px); opacity: 0.3; }
-                }
-                
                 .animate-float { animation: float 6s ease-in-out infinite; }
                 .animate-float-delayed { animation: float-delayed 8s ease-in-out infinite; }
                 .animate-bounce-slow { animation: bounce-slow 4s ease-in-out infinite; }
                 .animate-spin-slow { animation: spin-slow 20s linear infinite; }
-                .animate-wiggle { animation: wiggle 5s ease-in-out infinite; }
                 .animate-fade-in-up { animation: fade-in-up 1s ease-out; }
                 .animate-fade-in-up-delayed { animation: fade-in-up-delayed 2s ease-out; }
                 .animate-fade-in-scale { animation: fade-in-scale 2.5s ease-out; }
                 .animate-expand-width { animation: expand-width 1.5s ease-out; }
-                .animate-float-particle-1 { animation: float-particle-1 8s ease-in-out infinite; }
-                .animate-float-particle-2 { animation: float-particle-2 10s ease-in-out infinite; }
-                .animate-float-particle-3 { animation: float-particle-3 12s ease-in-out infinite; }
             `}</style>
         </section>
     );

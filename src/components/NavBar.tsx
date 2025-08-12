@@ -27,6 +27,19 @@ export default function NavBar() {
     };
   }, [handleScroll]);
 
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [menuOpen]);
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -115,29 +128,29 @@ export default function NavBar() {
         </div>
       </div>
 
-      {/* Mobile Menu - Animated Drawer with enhanced mobile UX */}
+      {/* Mobile Menu - Fixed positioning and improved mobile UX */}
       <div 
-        className={`lg:hidden fixed inset-0 z-40 ${menuOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
+        className={`lg:hidden fixed inset-0 z-[60] ${menuOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
         aria-hidden={!menuOpen}
       >
-        {/* Backdrop overlay - improved for mobile */}
+        {/* Backdrop overlay */}
         <div 
-          className={`absolute inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
             menuOpen ? 'opacity-100' : 'opacity-0'
           }`}
           onClick={() => setMenuOpen(false)}
         ></div>
         
-        {/* Menu panel - enhanced for mobile */}
+        {/* Menu panel - Fixed height and positioning */}
         <div 
-          className={`absolute top-0 right-0 w-[85%] max-w-xs h-full bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${
+          className={`absolute top-0 right-0 w-[85%] max-w-xs h-screen bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${
             menuOpen ? 'translate-x-0' : 'translate-x-full'
-          } flex flex-col safe-bottom`}
+          } flex flex-col`}
           role="dialog"
           aria-modal="true"
         >
-          {/* Menu header - improved for mobile */}
-          <div className="flex items-center justify-between p-4 border-b border-blue-50">
+          {/* Menu header */}
+          <div className="flex items-center justify-between p-4 border-b border-blue-50 flex-shrink-0">
             <div className="flex items-center space-x-2.5">
               <div className="relative w-9 h-9 rounded-full overflow-hidden border-2 border-blue-200 shadow-sm">
                 <Image
@@ -161,42 +174,49 @@ export default function NavBar() {
             </button>
           </div>
           
-          {/* Menu links with indicators - enhanced for touch */}
-          <div className="flex-1 overflow-auto overscroll-contain py-3 px-2">
-            <nav className="flex flex-col space-y-1">
+          {/* Menu links - Fixed overflow and proper spacing */}
+          <div className="flex-1 overflow-y-auto py-4 px-3">
+            <nav className="flex flex-col space-y-2">
               <Link
                 href="/"
-                className="group flex items-center py-4 px-4 text-gray-700 hover:text-blue-600 active:bg-blue-100 hover:bg-blue-50 rounded-lg transition-all duration-200 ease-in-out touch-manipulation"
+                className="group flex items-center py-3 px-4 text-gray-700 hover:text-blue-600 active:bg-blue-100 hover:bg-blue-50 rounded-xl transition-all duration-200 ease-in-out touch-manipulation min-h-[48px]"
                 onClick={() => setMenuOpen(false)}
               >
-                <span className="w-1.5 h-10 bg-transparent group-hover:bg-blue-500 rounded-full transition-all duration-200 mr-3"></span>
+                <span className="w-1 h-8 bg-transparent group-hover:bg-blue-500 rounded-full transition-all duration-200 mr-3 flex-shrink-0"></span>
                 <span className="font-medium text-base">Beranda</span>
               </Link>
               <Link
                 href="/karangduwet"
-                className="group flex items-center py-4 px-4 text-gray-700 hover:text-blue-600 active:bg-blue-100 hover:bg-blue-50 rounded-lg transition-all duration-200 ease-in-out touch-manipulation"
+                className="group flex items-center py-3 px-4 text-gray-700 hover:text-blue-600 active:bg-blue-100 hover:bg-blue-50 rounded-xl transition-all duration-200 ease-in-out touch-manipulation min-h-[48px]"
                 onClick={() => setMenuOpen(false)}
               >
-                <span className="w-1.5 h-10 bg-transparent group-hover:bg-blue-500 rounded-full transition-all duration-200 mr-3"></span>
+                <span className="w-1 h-8 bg-transparent group-hover:bg-blue-500 rounded-full transition-all duration-200 mr-3 flex-shrink-0"></span>
                 <span className="font-medium text-base">Karangduwet</span>
               </Link>
               <Link
                 href="/grogol"
-                className="group flex items-center py-4 px-4 text-gray-700 hover:text-blue-600 active:bg-blue-100 hover:bg-blue-50 rounded-lg transition-all duration-200 ease-in-out touch-manipulation"
+                className="group flex items-center py-3 px-4 text-gray-700 hover:text-blue-600 active:bg-blue-100 hover:bg-blue-50 rounded-xl transition-all duration-200 ease-in-out touch-manipulation min-h-[48px]"
                 onClick={() => setMenuOpen(false)}
               >
-                <span className="w-1.5 h-10 bg-transparent group-hover:bg-blue-500 rounded-full transition-all duration-200 mr-3"></span>
+                <span className="w-1 h-8 bg-transparent group-hover:bg-blue-500 rounded-full transition-all duration-200 mr-3 flex-shrink-0"></span>
                 <span className="font-medium text-base">Grogol</span>
               </Link>
               <Link
                 href="/pampang"
-                className="group flex items-center py-4 px-4 text-gray-700 hover:text-blue-600 active:bg-blue-100 hover:bg-blue-50 rounded-lg transition-all duration-200 ease-in-out touch-manipulation"
+                className="group flex items-center py-3 px-4 text-gray-700 hover:text-blue-600 active:bg-blue-100 hover:bg-blue-50 rounded-xl transition-all duration-200 ease-in-out touch-manipulation min-h-[48px]"
                 onClick={() => setMenuOpen(false)}
               >
-                <span className="w-1.5 h-10 bg-transparent group-hover:bg-blue-500 rounded-full transition-all duration-200 mr-3"></span>
+                <span className="w-1 h-8 bg-transparent group-hover:bg-blue-500 rounded-full transition-all duration-200 mr-3 flex-shrink-0"></span>
                 <span className="font-medium text-base">Pampang</span>
               </Link>
             </nav>
+          </div>
+
+          {/* Footer area - Optional */}
+          <div className="flex-shrink-0 p-4 border-t border-blue-50">
+            <p className="text-xs text-gray-500 text-center">
+              © 2025 KKN-PPM UGM
+            </p>
           </div>
         </div>
       </div>

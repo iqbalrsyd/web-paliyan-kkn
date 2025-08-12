@@ -225,8 +225,8 @@ const FotoBersamaCarousel: React.FC<{
   };
 
   return (
-    <div className="relative h-[200px] sm:h-[180px] rounded-xl overflow-hidden bg-gray-50 shadow-md group">
-      {/* Images with 3:2 aspect ratio (horizontal) */}
+    <div className="relative h-[250px] sm:h-[320px] lg:h-[380px] xl:h-[420px] rounded-xl overflow-hidden bg-gray-50 shadow-md group">
+      {/* Images with enhanced height for better 1:2 aspect ratio */}
       <div className="relative w-full h-full">
         {photos.map((photo, index) => (
           <div
@@ -252,9 +252,12 @@ const FotoBersamaCarousel: React.FC<{
                 alt={`Tim ${desaName} - ${index + 1}`}
                 fill
                 className="object-cover object-center transition-transform duration-1000 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 40vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 70vw, 60vw"
                 priority={index === 0}
                 onError={() => handleImageError(index)}
+                style={{
+                  objectPosition: 'center center'
+                }}
               />
             )}
           </div>
@@ -284,6 +287,35 @@ const FotoBersamaCarousel: React.FC<{
           {currentPhotoIndex + 1}/{photos.length}
         </span>
       </div>
+
+      {/* Navigation arrows - Enhanced untuk desktop */}
+      {photos.length > 1 && (
+        <>
+          <button
+            onClick={() => {
+              const prevIndex = currentPhotoIndex === 0 ? photos.length - 1 : currentPhotoIndex - 1;
+              setCurrentPhotoIndex(prevIndex);
+            }}
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white hover:shadow-xl transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 z-10"
+          >
+            <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          <button
+            onClick={() => {
+              const nextIndex = currentPhotoIndex === photos.length - 1 ? 0 : currentPhotoIndex + 1;
+              setCurrentPhotoIndex(nextIndex);
+            }}
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white hover:shadow-xl transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 z-10"
+          >
+            <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </>
+      )}
     </div>
   );
 };

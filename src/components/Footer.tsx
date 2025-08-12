@@ -225,7 +225,7 @@ const Footer: React.FC = () => {
                 © {currentYear} KKN-PPM UGM Paliyan. Seluruh hak cipta dilindungi.
               </p>
               <p className="text-gray-400 text-xs mt-1">
-                Dibuat dengan ❤️ untuk masyarakat Paliyan
+                Pengembangan oleh Iqbal Hidayat Rasyad dan Tim KKN UGM Paliyan 2025
               </p>
             </div>
 
