@@ -1,7 +1,6 @@
 import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 import DesaHeroSection from '../../components/desa/DesaHeroSection';
-import DesaInfoSection from '../../components/desa/DesaInfoSection';
 import DesaProgramSection from '../../components/desa/DesaProgramSection';
 import DesaUmkmSection from '../../components/desa/DesaUmkmSection';
 import DesaWebsiteCarouselProps from '../../components/desa/DesaWebsiteCarousel';
